@@ -1,5 +1,5 @@
 public class SubTask extends Task {
-    public int epicId;
+    protected int epicId;
 
     @Override
     public String toString() {
