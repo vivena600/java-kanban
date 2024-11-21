@@ -1,3 +1,5 @@
+package model;
+
 import java.util.Objects;
 
 public class Task {
@@ -12,11 +14,43 @@ public class Task {
         this.status = TaskStatus.NEW; //по умолчанию
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Task(String title, String description, TaskStatus status, int id){
         this.title = title;
         this.description = description;
         this.status = status;
         this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -40,12 +74,12 @@ public class Task {
     @Override
     public int hashCode() {
         int hash = 17;
-        if(title != null){
+        if(title != null) {
             hash += title.hashCode();
         }
         hash *= 31;
 
-        if (description != null){
+        if (description != null) {
             hash += description.hashCode();
         }
         return hash;

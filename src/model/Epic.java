@@ -1,12 +1,17 @@
+package model;
+
 import java.util.ArrayList;
 
 public class Epic extends Task{
-
     protected ArrayList<Integer> subTaskId = new ArrayList<>();
 
     public Epic(String title, String description, int id) {
         super(title, description);
         this.id = id;
+    }
+
+    public ArrayList<Integer> getSubTaskId() {
+        return subTaskId;
     }
 
     public Epic(String title, String descryption) {

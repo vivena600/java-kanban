@@ -1,15 +1,24 @@
+package model;
+
 public class SubTask extends Task {
-    protected int epicId;
+    private int epicId;
+
+    public int getEpicId() {
+        return epicId;
+    }
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
+    }
 
     @Override
     public String toString() {
         return "SubTask{" +
-                "epicId=" + epicId +
-                ", description='" + description + '\'' +
+                "id=" + id +
+                ", epicId=" + epicId +
                 ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
                 ", status=" + status +
-                ", id=" + id +
-                ", epicid=" + epicId +
                 '}';
     }
 
