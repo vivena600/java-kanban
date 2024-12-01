@@ -1,11 +1,12 @@
-import controlles.InMemoryTaskManager;
+import controlles.*;
 import model.*;
 
 import java.util.ArrayList;
 
 public class Main {
+    static TaskManager taskManager;
     public static void main(String[] args) {
-        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        taskManager = Managers.getDefault();
 
         Task task1 = new Task("Дописать код", "для 5-го спринта");
         taskManager.add(task1);
@@ -43,7 +44,7 @@ public class Main {
         printHistory(taskManager);
     }
 
-    private static void printAllTasks(InMemoryTaskManager manager) {
+    private static void printAllTasks(TaskManager manager) {
         System.out.println("Задачи:");
         for (Task task : manager.getTasks()) {
             System.out.println(task);
@@ -62,7 +63,7 @@ public class Main {
         }
     }
 
-    public static void printHistory(InMemoryTaskManager taskManager){
+    public static void printHistory(TaskManager taskManager){
         taskManager.getTaskByid(1);
         taskManager.getEpicsById(2);
         taskManager.getSubTaskById(3);

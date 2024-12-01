@@ -29,6 +29,5 @@ class ManagersTest {
         memoryManager = managers.getDefaultHistory();
         assertNotNull(memoryManager, "Возвращают null");
         assertTrue(memoryManager instanceof InMemoryHistoryManager, "Создается экземпляр другого класса");
-
     }
 }
