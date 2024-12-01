@@ -3,32 +3,37 @@ package controlles;
 import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class TaskManager {
+public class InMemoryTaskManager implements TaskManager {
+    InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
     private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-
     private int nextId = 1;
 
+    @Override
     public int counterId() {
         return nextId ++;
     }
 
+    @Override
     public void add(Task task) {
         task.setId(counterId());
         taskHashMap.put(task.getId(), task);
     }
 
+    @Override
     public void update(Task task) {
         taskHashMap.put(task.getId(), task);
     }
 
+    @Override
     public void add(SubTask subTask) {
         if (subTask.getId() == 0) {
             subTask.setId(counterId());
-            subTaskHashMap.put(subTask.getId(), subTask);
         }
+        subTaskHashMap.put(subTask.getId(), subTask);
 
         Epic epic = epicHashMap.get(subTask.getEpicId());
         if (epic == null) {
@@ -38,20 +43,24 @@ public class TaskManager {
         updateEpicStatuc(epic);
     }
 
+    @Override
     public void update(SubTask subTask) {
         subTaskHashMap.put(subTask.getId(), subTask);
         updateEpicStatuc(epicHashMap.get(subTask.getEpicId()));
     }
 
+    @Override
     public void add(Epic epic) {
         epic.setId(counterId());
         epicHashMap.put(epic.getId(), epic);
     }
 
+    @Override
     public void update(Epic epic) {
         epicHashMap.put(epic.getId(), epic);
     }
 
+    @Override
     public void updateEpicStatuc(Epic epic) {
         int completedTasks = 0;
         int newTasks = 0;
@@ -75,16 +84,19 @@ public class TaskManager {
         }
     }
 
+    @Override
     public void clearAllTask() {
         deleteSubtasks();
         deleteTask();
         deleteEpic();
     }
 
+    @Override
     public void deleteTask(){
         taskHashMap.clear();
     }
 
+    @Override
     public void deleteSubtasks(){
         for (Epic epic : epicHashMap.values()){
             if (epic != null){
@@ -94,14 +106,17 @@ public class TaskManager {
         subTaskHashMap.clear();
     }
 
+    @Override
     public void deleteEpic(){
         epicHashMap.clear();
         subTaskHashMap.clear();
     }
 
+    @Override
     public void deleteTasks(int id) {
         taskHashMap.remove(id);
     }
+    @Override
     public void deleteSubtasks(int id) {
         SubTask subTask = subTaskHashMap.get(id);
         Epic epic = epicHashMap.get(subTask.getEpicId());
@@ -112,6 +127,7 @@ public class TaskManager {
         }
         subTaskHashMap.remove(id);
     }
+    @Override
     public void deleteEpics(int id) {
         Epic epic = epicHashMap.get(id);
         for (Integer subTaskId : epic.getSubTaskId()) {
@@ -120,18 +136,22 @@ public class TaskManager {
         epicHashMap.remove(id);
     }
 
+    @Override
     public ArrayList<Task> getTasks() {
         return new ArrayList<>(taskHashMap.values());
     }
 
+    @Override
     public ArrayList<Task> getSubTasks() {
         return new ArrayList<>(subTaskHashMap.values());
     }
 
+    @Override
     public ArrayList<Task> getEpics() {
         return new ArrayList<>(epicHashMap.values());
     }
 
+    @Override
     public ArrayList<SubTask> getEpicsSupTask(Epic epic) {
         ArrayList<SubTask> subtaskList = new ArrayList<SubTask>();
         for (Integer idSubTask : epic.getSubTaskId()){
@@ -140,15 +160,25 @@ public class TaskManager {
         return  subtaskList;
     }
 
+    @Override
     public Task getTaskByid(int id) {
+        historyManager.add(taskHashMap.get(id));
         return taskHashMap.get(id);
     }
 
+    @Override
     public SubTask getSubTaskById(int id) {
+        historyManager.add(subTaskHashMap.get(id));
         return subTaskHashMap.get(id);
     }
 
+    @Override
     public Epic getEpicsById(int id) {
+        historyManager.add(epicHashMap.get(id));
         return epicHashMap.get(id);
+    }
+
+    public ArrayList<Task> getHistory(){
+        return historyManager.getHistoryTask();
     }
 }

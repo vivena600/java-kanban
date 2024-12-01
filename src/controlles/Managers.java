@@ -1,2 +1,11 @@
-package controlles;public class Managers {
+package controlles;
+
+public class Managers {
+    public TaskManager getDefault() {
+        return new InMemoryTaskManager();
+    }
+
+    public HistoryManager getDefaultHistory(){
+        return new InMemoryHistoryManager();
+    }
 }
