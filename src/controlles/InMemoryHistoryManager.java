@@ -12,7 +12,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (task != null){
+        if (task != null) {
             remove(task.getId());
             linkLast(task);
         }
@@ -21,7 +21,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public ArrayList<Task> getHistoryTask() {
         taskHistory.clear();
-        for (Node node : historyHashMap.values()){
+        for (Node node : historyHashMap.values()) {
             taskHistory.add((Task) node.task);
         }
         return taskHistory;
@@ -42,7 +42,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         Node newNode = new Node(lastNode, task, null);
         historyHashMap.put(task.getId(), newNode);
         lastNode = newNode;
-        if (oldLast == null){
+        if (oldLast == null) {
             headNode = lastNode;
         } else {
             oldLast.next = newNode;
