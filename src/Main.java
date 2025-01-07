@@ -24,8 +24,8 @@ public class Main {
         Task task1Update = new Task(task1.getTitle(), task1.getDescription(), TaskStatus.IN_PROGRESS, task1.getId());
         taskManager.update(task1Update);
 
-        SubTask subTaskUpdate = new SubTask(subTask3.getTitle(), subTask3.getDescription(), TaskStatus.DONE, subTask3.getId(),
-                subTask3.getEpicId());
+        SubTask subTaskUpdate = new SubTask(subTask3.getTitle(), subTask3.getDescription(), TaskStatus.DONE,
+                subTask3.getId(), subTask3.getEpicId());
         taskManager.update(subTaskUpdate);
         taskManager.update(epic2);
 
@@ -58,7 +58,6 @@ public class Main {
         System.out.println("Эпики:");
         for (Task epic : manager.getEpics()) {
             System.out.println(epic);
-
             for (Task task : manager.getEpicsSupTask((Epic) epic)) {
                 System.out.println("--> " + task);
             }
@@ -69,7 +68,7 @@ public class Main {
         }
     }
 
-    public static void printHistory(TaskManager taskManager){
+    public static void printHistory(TaskManager taskManager) {
         taskManager.getTaskByid(1);
         taskManager.getEpicsById(2);
         taskManager.getSubTaskById(3);
@@ -85,7 +84,7 @@ public class Main {
 
         ArrayList<Task> history = taskManager.getHistory();
         int index = 1;
-        for(Task task : history){
+        for(Task task : history) {
             System.out.println(index + "  " + task);
             index ++;
         }

@@ -56,7 +56,6 @@ public class MainHistory {
         System.out.println("Эпики:");
         for (Task epic : manager.getEpics()) {
             System.out.println(epic);
-
             for (Task task : manager.getEpicsSupTask((Epic) epic)) {
                 System.out.println("--> " + task);
             }
@@ -67,11 +66,10 @@ public class MainHistory {
         }
     }
 
-    public static void printHistory(TaskManager taskManager){
-
+    public static void printHistory(TaskManager taskManager) {
         ArrayList<Task> history = taskManager.getHistory();
         int index = 1;
-        for(Task task : history){
+        for(Task task : history) {
             System.out.println(index + "  " + task);
             index ++;
         }
