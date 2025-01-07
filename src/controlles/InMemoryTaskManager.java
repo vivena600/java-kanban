@@ -72,7 +72,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         if (completedTasks == epic.getSubTaskId().size()) {
-            epic.setStatus( TaskStatus.DONE);
+            epic.setStatus(TaskStatus.DONE);
         } else if (newTasks == epic.getSubTaskId().size() || epic.getSubTaskId().isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
         } else {
@@ -128,6 +128,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
         subTaskHashMap.remove(id);
     }
+
     @Override
     public void deleteEpics(int id) {
         Epic epic = epicHashMap.get(id);
