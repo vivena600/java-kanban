@@ -26,7 +26,7 @@ public class InMemoryHistoryManagerTest {
     Task task4 = new Task("title11", "discription11");
 
     @BeforeEach
-    void taskManager(){
+    void taskManager() {
         taskManager = new InMemoryTaskManager();
 
         taskManager.add(task1);
