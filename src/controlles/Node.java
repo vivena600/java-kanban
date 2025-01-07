@@ -1,5 +1,4 @@
 package controlles;
-import model.Task;
 
 public class Node<Task> {
     Node<Task> next;
