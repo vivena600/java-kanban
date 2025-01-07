@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class Main {
     static TaskManager taskManager;
+
     public static void main(String[] args) {
         taskManager = Managers.getDefault();
-
         Task task1 = new Task("Дописать код", "для 5-го спринта"); //id = 1
         taskManager.add(task1);
         Epic epic1 = new Epic("Дописать курсовую", "Осталось только сдать ПЗ ");
@@ -84,9 +84,9 @@ public class Main {
 
         ArrayList<Task> history = taskManager.getHistory();
         int index = 1;
-        for(Task task : history) {
+        for (Task task : history) {
             System.out.println(index + "  " + task);
-            index ++;
+            index++;
         }
     }
 }
