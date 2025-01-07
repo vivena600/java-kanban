@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class MainHistory {
     static TaskManager taskManager;
-    
     public static void main(String[] args) {
         taskManager = Managers.getDefault();
         Task task1 = new Task("Задача 1", "Описание 1"); //id = 1
