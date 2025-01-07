@@ -74,7 +74,7 @@ public class Task {
     @Override
     public int hashCode() {
         int hash = 17;
-        if(title != null) {
+        if (title != null) {
             hash += title.hashCode();
         }
         hash *= 31;
