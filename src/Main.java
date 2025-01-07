@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String[] args) {
         taskManager = Managers.getDefault();
-        Task task1 = new Task("Дописать код", "для 5-го спринта"); //id = 1
+        Task task1 = new Task("Дописать код", "для 5-го спринта");
         taskManager.add(task1);
         Epic epic1 = new Epic("Дописать курсовую", "Осталось только сдать ПЗ ");
         taskManager.add(epic1);
