@@ -26,7 +26,7 @@ public class InMemoryHistoryManagerTest {
     Task task4 = new Task("title11", "discription11");
 
     @BeforeEach
-    void TaskManager(){
+    void taskManager(){
         taskManager = new InMemoryTaskManager();
 
         taskManager.add(task1);
@@ -43,13 +43,13 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void add(){
+    void add() {
         historyManager.add(task2);
         final ArrayList<Task> historyTask = historyManager.getHistoryTask();
         assertNotNull(historyTask, "Итория не пустая");
         assertEquals(1, historyTask.size(), "История не пустая.");
-
     }
+
     @Test
     void getHistory() {
         taskManager.getTaskByid(1);
@@ -71,8 +71,9 @@ public class InMemoryHistoryManagerTest {
         assertEquals(subTask6, taskManager.getHistory().get(10), "Не корректно записываются элементы в конец " +
                 "списка");
     }
+
     @Test
-    void getHistoryWithSameTasks(){
+    void getHistoryWithSameTasks() {
         taskManager.getTaskByid(1);
         taskManager.getTaskByid(1);
         taskManager.getTaskByid(1);
@@ -86,7 +87,7 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void getHistoryBeforeDeleteTask(){
+    void getHistoryBeforeDeleteTask() {
         taskManager.getTaskByid(1);
         taskManager.getTaskByid(2);
         taskManager.getTaskByid(3);
@@ -110,7 +111,7 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void getHistoryBeforeDeleteEpic(){
+    void getHistoryBeforeDeleteEpic() {
         taskManager.getTaskByid(1);
         taskManager.getTaskByid(2);
         taskManager.getTaskByid(3);
