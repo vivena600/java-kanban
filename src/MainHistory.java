@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class MainHistory {
     static TaskManager taskManager;
+    
     public static void main(String[] args) {
         taskManager = Managers.getDefault();
-
         Task task1 = new Task("Задача 1", "Описание 1"); //id = 1
         Task task2 = new Task("Задача 2", "Описание 2"); //id = 2
         taskManager.add(task1);
@@ -69,9 +69,9 @@ public class MainHistory {
     public static void printHistory(TaskManager taskManager) {
         ArrayList<Task> history = taskManager.getHistory();
         int index = 1;
-        for(Task task : history) {
+        for (Task task : history) {
             System.out.println(index + "  " + task);
-            index ++;
+            index++;
         }
     }
 }
