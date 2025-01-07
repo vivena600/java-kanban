@@ -1,5 +1,3 @@
-package test;
-
 import model.*;
 import controlles.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeAll;
