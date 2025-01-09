@@ -99,6 +99,9 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteSubtasks() {
         for (Epic epic : epicHashMap.values()) {
             if (epic != null) {
+                for (Integer indexSubTask : epic.getSubTaskId()) {
+                    historyManager.remove(indexSubTask);
+                }
                 epic.getSubTaskId().clear();
             }
         }
@@ -107,6 +110,15 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void deleteEpic() {
+        for (Epic epic : epicHashMap.values()) {
+            if (epic != null) {
+                for (Integer indexSubTask : epic.getSubTaskId()) {
+                    historyManager.remove(indexSubTask);
+                }
+                epic.getSubTaskId().clear();
+                historyManager.remove(epic.getId());
+            }
+        }
         epicHashMap.clear();
         subTaskHashMap.clear();
     }

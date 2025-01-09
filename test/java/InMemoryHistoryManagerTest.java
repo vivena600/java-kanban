@@ -132,4 +132,48 @@ public class InMemoryHistoryManagerTest {
         assertFalse(taskManager.getHistory().contains(subTask4), "Не корректно удаляются подзадачи в эпиках");
         assertFalse(taskManager.getHistory().contains(epic2), "Не корректно удаляются эпики из истории");
     }
+
+    @Test
+    void getHistoryTaskBeforeDeleteSimpleTasks() {
+        taskManager.getTaskByid(1);
+        taskManager.getTaskByid(2);
+        taskManager.getTaskByid(3);
+        taskManager.getTaskByid(4);
+        taskManager.getEpicsById(5); //
+        taskManager.getSubTaskById(6); //
+        taskManager.getSubTaskById(7); //
+        taskManager.getEpicsById(8); //
+        taskManager.getSubTaskById(9);//
+        taskManager.getSubTaskById(10);//
+        taskManager.getSubTaskById(11);//
+
+        taskManager.deleteTask();
+        assertNotNull(taskManager.getHistory(), "Не получилось получить историю просмотров");
+        assertEquals(7, taskManager.getHistory().size(), "Не корректный размер истории после " +
+                "удаления всех задач");
+        assertFalse(taskManager.getHistory().contains(task1), "Не удалились одна из задач");
+        assertEquals(epic1, taskManager.getHistory().get(0), "Не корректная запись первого элемента");
+    }
+
+    @Test
+    void getHistoryTasksBeforeDeleteEpics() {
+        taskManager.getTaskByid(1);
+        taskManager.getTaskByid(2);
+        taskManager.getTaskByid(3);
+        taskManager.getTaskByid(4);
+        taskManager.getEpicsById(5);
+        taskManager.getSubTaskById(6);
+        taskManager.getSubTaskById(7);
+        taskManager.getEpicsById(8);
+        taskManager.getSubTaskById(9);
+        taskManager.getSubTaskById(10);
+        taskManager.getSubTaskById(11);
+
+        taskManager.deleteEpic();
+        assertNotNull(taskManager.getHistory(), "Не получилось получить историю просмотров");
+        assertEquals(4, taskManager.getHistory().size(), "Не корректный размер истории после " +
+                "удаления всех задач");
+        assertFalse(taskManager.getHistory().contains(subTask4), "Не удалились подзадачи в эпиках");
+        assertEquals(task4, taskManager.getHistory().get(3), "Не корректная запись последнего элемента");
+    }
 }
