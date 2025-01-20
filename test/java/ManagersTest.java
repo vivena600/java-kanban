@@ -1,5 +1,3 @@
-package test;
-
 import controlles.*;
 
 import org.junit.jupiter.api.BeforeAll;

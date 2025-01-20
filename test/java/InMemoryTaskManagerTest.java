@@ -1,13 +1,8 @@
-package test;
-
-import com.sun.tools.javac.Main;
 import model.*;
 import controlles.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
@@ -43,7 +38,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewSubTask(){
+    void addNewSubTask() {
         taskManager.add(subTask);
         final  SubTask savedSubTask = taskManager.getSubTaskById(subTask.getId());
 
@@ -59,7 +54,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void addNewEpic(){
+    void addNewEpic() {
         taskManager.add(epic);
         taskManager.add(subTask);
         final Epic savedEpic = taskManager.getEpicsById(epic.getId());
@@ -85,7 +80,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void deleteById(){
+    void deleteById() {
         taskManager.deleteTasks(task.getId());
         System.out.println(taskManager.getTasks());
         assertEquals(0, taskManager.getTasks().size(), "Задача не удалилась");

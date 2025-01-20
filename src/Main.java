@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public class Main {
     static TaskManager taskManager;
+
     public static void main(String[] args) {
         taskManager = Managers.getDefault();
-
         Task task1 = new Task("Дописать код", "для 5-го спринта");
         taskManager.add(task1);
         Epic epic1 = new Epic("Дописать курсовую", "Осталось только сдать ПЗ ");
@@ -24,8 +24,8 @@ public class Main {
         Task task1Update = new Task(task1.getTitle(), task1.getDescription(), TaskStatus.IN_PROGRESS, task1.getId());
         taskManager.update(task1Update);
 
-        SubTask subTaskUpdate = new SubTask(subTask3.getTitle(), subTask3.getDescription(), TaskStatus.DONE, subTask3.getId(),
-                subTask3.getEpicId());
+        SubTask subTaskUpdate = new SubTask(subTask3.getTitle(), subTask3.getDescription(), TaskStatus.DONE,
+                subTask3.getId(), subTask3.getEpicId());
         taskManager.update(subTaskUpdate);
         taskManager.update(epic2);
 
@@ -42,6 +42,12 @@ public class Main {
         printAllTasks(taskManager);
         System.out.println("-".repeat(120));
         printHistory(taskManager);
+
+        System.out.println("-".repeat(120));
+        System.out.println("Проверка на удаление по айди");
+        taskManager.deleteTasks(1);
+        printAllTasks(taskManager);
+        printHistory(taskManager);
     }
 
     private static void printAllTasks(TaskManager manager) {
@@ -52,7 +58,6 @@ public class Main {
         System.out.println("Эпики:");
         for (Task epic : manager.getEpics()) {
             System.out.println(epic);
-
             for (Task task : manager.getEpicsSupTask((Epic) epic)) {
                 System.out.println("--> " + task);
             }
@@ -63,7 +68,7 @@ public class Main {
         }
     }
 
-    public static void printHistory(TaskManager taskManager){
+    public static void printHistory(TaskManager taskManager) {
         taskManager.getTaskByid(1);
         taskManager.getEpicsById(2);
         taskManager.getSubTaskById(3);
@@ -75,12 +80,13 @@ public class Main {
         taskManager.getSubTaskById(9);
         taskManager.getSubTaskById(10);
         taskManager.getTaskByid(1);
+        taskManager.deleteTasks(1);
 
         ArrayList<Task> history = taskManager.getHistory();
         int index = 1;
-        for(Task task : history){
+        for (Task task : history) {
             System.out.println(index + "  " + task);
-            index ++;
+            index++;
         }
     }
 }
