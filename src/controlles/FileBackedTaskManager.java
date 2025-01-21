@@ -116,7 +116,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         fileBackedTaskManager.add(subTask3);
         Task task2Update = new Task("Задача 2", "Описание 2", TaskStatus.IN_PROGRESS, 2);
         fileBackedTaskManager.update(task2Update);
-
         FileBackedTaskManager newFileBacked = loadFromFile(file);
         Task task3 = new Task("Задача 3", "Описание 3"); //id = 8
         Task task1Update = new Task("Задача 1", "Описание 1", TaskStatus.DONE, 1);

@@ -10,7 +10,7 @@ public class Epic extends Task {
         this.id = id;
     }
 
-    public Epic (String title, String description, TaskStatus status, int id) {
+    public Epic(String title, String description, TaskStatus status, int id) {
         super(title, description);
         this.id = id;
         this.status = status;
