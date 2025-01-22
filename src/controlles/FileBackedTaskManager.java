@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileBackedTaskManager extends InMemoryTaskManager implements TaskManager {
+public class FileBackedTaskManager extends InMemoryTaskManager {
     private String fileName;
 
     public FileBackedTaskManager(String fileName) {
@@ -16,13 +16,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     private TypeTask getType(Task task) {
-        if (task instanceof SubTask) {
-            return TypeTask.SUBTASK;
-        } else if (task instanceof Epic) {
-            return TypeTask.EPIC;
-        } else {
-            return TypeTask.TASK;
-        }
+        return task.getType();
     }
 
     private int getEpicId(Task task) {
@@ -79,7 +73,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         }
     }
 
-    static FileBackedTaskManager loadFromFile(File file) {
+    public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager newFileBackedTaskManager = new FileBackedTaskManager(file.getAbsolutePath());
         try (FileReader fileReader = new FileReader(file);
              BufferedReader bufferedReader = new BufferedReader(fileReader)) {
@@ -98,8 +92,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
     }
 
     public static void main(String[] args) {
-        File file = new File("test.csv");
-        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.getName());
+        File file = new File("src/resources/test.csv");
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.getAbsolutePath());
         Task task1 = new Task("Задача 1", "Описание 1"); //id = 1
         Task task2 = new Task("Задача 2", "Описание 2"); //id = 2
         fileBackedTaskManager.add(task1);
@@ -114,6 +108,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager implements TaskMa
         fileBackedTaskManager.add(subTask1);
         fileBackedTaskManager.add(subTask2);
         fileBackedTaskManager.add(subTask3);
+
         Task task2Update = new Task("Задача 2", "Описание 2", TaskStatus.IN_PROGRESS, 2);
         fileBackedTaskManager.update(task2Update);
         FileBackedTaskManager newFileBacked = loadFromFile(file);

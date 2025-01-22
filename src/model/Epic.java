@@ -1,5 +1,7 @@
 package model;
 
+import controlles.TypeTask;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
@@ -22,6 +24,11 @@ public class Epic extends Task {
 
     public Epic(String title, String descryption) {
         super(title, descryption);
+    }
+
+    @Override
+    public TypeTask getType() {
+        return TypeTask.EPIC;
     }
 
     @Override
