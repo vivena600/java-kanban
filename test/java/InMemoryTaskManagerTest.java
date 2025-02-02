@@ -58,21 +58,17 @@ class InMemoryTaskManagerTest {
         taskManager.add(epic);
         taskManager.add(subTask);
         final Epic savedEpic = taskManager.getEpicsById(epic.getId());
-
         assertNotNull(savedEpic, "Эпик не найден");
         assertEquals(savedEpic, epic, "Задачи не совпадают");
-
         subTask2 = new SubTask("Test addNewSubTask", "Test add NewSubtask descriprion", TaskStatus.DONE,
                 2, 1);
         taskManager.add(subTask2);
         taskManager.update(epic);
         assertEquals(TaskStatus.DONE, subTask2.getStatus(), "Статусы эпиков не совпадают");
-
         final ArrayList<Task> epics = taskManager.getEpics();
         assertNotNull(epics, "Эпики не возвращаются");
         assertEquals(1, epics.size(), "Неверное количество задач");
         assertEquals(epic, epics.get(0), "Эпики не совпадают");
-
         final ArrayList<SubTask> subTasks = taskManager.getEpicsSupTask(epic);
         assertNotNull(subTasks, "Подзадачи не возвращаются");
         assertEquals(1, subTasks.size(), "Выводится неверное количество подзадач");
@@ -84,7 +80,6 @@ class InMemoryTaskManagerTest {
         taskManager.deleteTasks(task.getId());
         System.out.println(taskManager.getTasks());
         assertEquals(0, taskManager.getTasks().size(), "Задача не удалилась");
-
         taskManager.deleteSubtasks(subTask2.getId());
         taskManager.update(epic);
         assertEquals(1, taskManager.getSubTasks().size(), "Подзадача не удалилась"); //до этого в эпике

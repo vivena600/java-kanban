@@ -1,5 +1,7 @@
 package model;
 
+import controlles.TypeTask;
+
 import java.util.Objects;
 
 public class Task {
@@ -35,6 +37,10 @@ public class Task {
         this.description = description;
         this.status = status;
         this.id = id;
+    }
+
+    public TypeTask getType() {
+        return TypeTask.TASK;
     }
 
     public String getDescription() {

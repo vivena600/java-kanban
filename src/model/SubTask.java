@@ -1,5 +1,7 @@
 package model;
 
+import controlles.TypeTask;
+
 public class SubTask extends Task {
     private int epicId;
 
@@ -9,6 +11,11 @@ public class SubTask extends Task {
 
     public void setEpicId(int epicId) {
         this.epicId = epicId;
+    }
+
+    @Override
+    public TypeTask getType() {
+        return TypeTask.SUBTASK;
     }
 
     @Override
