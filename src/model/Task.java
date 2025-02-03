@@ -2,22 +2,43 @@ package model;
 
 import controlles.TypeTask;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
+    protected Duration duration;
+    protected LocalDateTime startTime;
     protected String description;
     protected String title;
     protected TaskStatus status;
     protected int id;
 
-    public Task(String title, String description) {
+    public Task(String title, String description, Duration duration, LocalDateTime startTime) {
         this.title = title;
         this.description = description;
         this.status = TaskStatus.NEW; //по умолчанию
+        this.duration = duration;
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (description.equals(0)) {
+            return startTime;
+        }
+        return  startTime.plus(duration);
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     public void setTitle(String title) {
@@ -32,11 +53,14 @@ public class Task {
         this.id = id;
     }
 
-    public Task(String title, String description, TaskStatus status, int id) {
+    public Task(String title, String description, TaskStatus status, int id,  Duration duration,
+                LocalDateTime startTime) {
         this.title = title;
         this.description = description;
         this.status = status;
         this.id = id;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public TypeTask getType() {
@@ -62,10 +86,13 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
-                "description='" + description + '\'' +
-                ", title='" + title + '\'' +
-                ", status=" + status +
-                ", id=" + id +
+                "id = " + id + '\'' +
+                "description= '" + description + '\'' +
+                ", title = '" + title + '\'' +
+                ", status = '" + status + '\'' +
+                ", duration = " + duration +
+                ", startTime = " + startTime +
+                ", endTime = " + getEndTime() +
                 '}';
     }
 
