@@ -4,6 +4,7 @@ import controlles.TypeTask;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class SubTask extends Task {
     private int epicId;
@@ -29,9 +30,9 @@ public class SubTask extends Task {
                 "description= '" + description + '\'' +
                 ", title = '" + title + '\'' +
                 ", status = '" + status + '\'' +
-                ", duration = " + duration +
-                ", startTime = " + startTime +
-                ", endTime = " + getEndTime() +
+                ", duration = " + duration.toMinutes() +
+                ", startTime = " + startTime.format(formatter) +
+                ", endTime = " + getEndTime().format(formatter)+
                 '}';
     }
 

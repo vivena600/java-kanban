@@ -5,8 +5,11 @@ import model.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
+    private Set<Task> setTaskForTime = new TreeSet<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
@@ -88,7 +91,6 @@ public class InMemoryTaskManager implements TaskManager {
             SubTask subTask = subTaskHashMap.get(subTaskId);
             endTime = endTime.plus(subTask.getDuration());
         }
-
         epic.setEndTime(endTime);
     }
 
@@ -215,5 +217,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<Task> getHistory() {
         return  new ArrayList<>(historyManager.getHistoryTask());
+    }
+
+    public Set<Task> getPrioritizedTasks() {
+        return setTaskForTime;
     }
 }

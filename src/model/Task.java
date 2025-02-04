@@ -4,6 +4,7 @@ import controlles.TypeTask;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -13,6 +14,8 @@ public class Task {
     protected String title;
     protected TaskStatus status;
     protected int id;
+
+    protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
 
     public Task(String title, String description, Duration duration, LocalDateTime startTime) {
         this.title = title;
@@ -85,14 +88,15 @@ public class Task {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
         return "Task{" +
                 "id = " + id + '\'' +
                 "description= '" + description + '\'' +
                 ", title = '" + title + '\'' +
                 ", status = '" + status + '\'' +
-                ", duration = " + duration +
-                ", startTime = " + startTime +
-                ", endTime = " + getEndTime() +
+                ", duration = " + duration.toMinutes() +
+                ", startTime = " + startTime.format(formatter) +
+                ", endTime = " + getEndTime().format(formatter)+
                 '}';
     }
 
