@@ -7,11 +7,13 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private String fileName;
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
 
     public FileBackedTaskManager(String fileName) {
         this.fileName = fileName;
@@ -28,8 +30,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public String toString(Task task) {
         List<String> line = new ArrayList<>(List.of(String.valueOf(task.getId()), String.valueOf(getType(task)),
                 task.getTitle(), String.valueOf(task.getStatus()), task.getDescription(),
-                String.valueOf(task.getDuration()), String.valueOf(task.getStartTime()),
-                String.valueOf(task.getEndTime())));
+                String.valueOf(task.getDuration().toMinutes()), String.valueOf(task.getStartTime().format(formatter)),
+                String.valueOf(task.getEndTime().format(formatter))));
         if (getType(task) == TypeTask.SUBTASK) {
             line.add(String.valueOf(getEpicId(task)));
         }
@@ -43,8 +45,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String title = params[2];
         TaskStatus status = TaskStatus.valueOf(params[3]);
         String description = params[4];
-        Duration duration = Duration.parse(params[5]);
-        LocalDateTime startTime = LocalDateTime.parse(params[6]);
+        Duration duration = Duration.ofMinutes(Long.parseLong(params[5]));
+        LocalDateTime startTime = LocalDateTime.parse(params[6], formatter);
 
         if (type == TypeTask.TASK) {
             Task task = new Task(title, description, status, id, duration, startTime);
@@ -62,7 +64,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void save() {
         try (FileWriter fileWriter = new FileWriter(fileName, StandardCharsets.UTF_8);
              BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
-            bufferedWriter.write("id,type,name,status,description, duration, startTime, epic\n");
+            bufferedWriter.write("id,type,name,status,description, duration, startTime, endTime, epic\n");
             for (Task task : getTasks()) {
                 bufferedWriter.write(toString(task) + "\n");
             }

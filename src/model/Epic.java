@@ -37,6 +37,10 @@ public class Epic extends Task {
         this.endTime = endTime;
     }
 
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
     @Override
     public TypeTask getType() {
         return TypeTask.EPIC;
@@ -50,9 +54,9 @@ public class Epic extends Task {
                 "description= '" + description + '\'' +
                 ", title = '" + title + '\'' +
                 ", status = '" + status + '\'' +
-                ", duration = " + duration.toMinutes() +
-                ", startTime = " + startTime.format(formatter) +
-                ", endTime = " + getEndTime().format(formatter) +
+                ", duration = " + (duration != null ? duration.toMinutes() : "null") +
+                ", startTime = " + (startTime != null ? startTime.format(formatter) : "null") +
+                ", endTime = " + (endTime != null ? endTime.format(formatter) : "null") +
                 '}';
     }
 }

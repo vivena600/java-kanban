@@ -14,8 +14,8 @@ public class MainHistory {
         Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofMinutes(35), LocalDateTime.of(2025, 02, 04, 00, 00)); //id = 2
         taskManager.add(task1);
         taskManager.add(task2);
-        Epic epic1 = new Epic("Эпик 1", "эпик с 3 подзадачами",  Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 05, 00, 00)); //id = 3
-        Epic epic2 = new Epic("Эпик 2", "эпик без задач",  Duration.ofDays(2), LocalDateTime.of(2025, 02, 07, 00, 00)); //id = 4
+        Epic epic1 = new Epic("Эпик 1", "эпик с 3 подзадачами", null, null); //id = 3
+        Epic epic2 = new Epic("Эпик 2", "эпик без задач",  null, null); //id = 4
         taskManager.add(epic1);
         taskManager.add(epic2);
         SubTask subTask1 = new SubTask("подзадача 1", "описание 1", epic1.getId(),  Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 5

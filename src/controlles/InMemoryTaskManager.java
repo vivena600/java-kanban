@@ -2,6 +2,7 @@ package controlles;
 
 import model.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,10 +87,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public void epicEndTime(Epic epic) {
-        LocalDateTime endTime = epic.getStartTime();
+        LocalDateTime endTime;
+        Duration durationEpic = Duration.ofMinutes(0);
+        if (epic.getStartTime() != null) {
+            endTime = epic.getStartTime();
+        } else {
+            endTime = LocalDateTime.now();
+        }
         for (Integer subTaskId : epic.getSubTaskId()) {
             SubTask subTask = subTaskHashMap.get(subTaskId);
             endTime = endTime.plus(subTask.getDuration());
+            durationEpic = durationEpic.plus(subTask.getDuration());
         }
         epic.setEndTime(endTime);
     }
