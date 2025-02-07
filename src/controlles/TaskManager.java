@@ -23,6 +23,8 @@ public interface TaskManager {
 
     void updateEpicStatuc(Epic epic);
 
+    void updateLocalTimeForEpic(Epic epic);
+
     void updateEpicDuration(Epic epic);
 
     void updateEpicStartTime(Epic epic);

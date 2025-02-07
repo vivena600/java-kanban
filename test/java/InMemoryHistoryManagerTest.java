@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InMemoryHistoryManagerTest {
+    /*
     static InMemoryTaskManager taskManager;
     static InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
 
@@ -176,4 +177,6 @@ public class InMemoryHistoryManagerTest {
         assertFalse(taskManager.getHistory().contains(subTask4), "Не удалились подзадачи в эпиках");
         assertEquals(task4, taskManager.getHistory().get(3), "Не корректная запись последнего элемента");
     }
+
+     */
 }

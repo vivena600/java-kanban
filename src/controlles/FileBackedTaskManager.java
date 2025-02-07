@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private String fileName;
@@ -209,20 +210,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateEpicDuration(Epic epic) {
-        super.updateEpicDuration(epic);
-        save();
-    }
-
-    @Override
-    public void updateEpicStartTime(Epic epic) {
-        super.updateEpicStartTime(epic);
-        save();
-    }
-
-    @Override
-    public void updateEpicEndTime(Epic epic) {
-        super.updateEpicEndTime(epic);
+    public void updateLocalTimeForEpic(Epic epic) {
+        super.updateLocalTimeForEpic(epic);
         save();
     }
 
@@ -267,4 +256,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         super.deleteEpics(id);
         save();
     }
+
+    @Override
+    public Set<Task> getPrioritizedTasks() {
+        return super.getPrioritizedTasks(); 
+    }
+
+
 }

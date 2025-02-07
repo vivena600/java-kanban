@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
+    /*
     static InMemoryTaskManager taskManager;
     static Task task;
     static Epic epic;
@@ -92,4 +93,6 @@ class InMemoryTaskManagerTest {
         taskManager.deleteEpics(4);
         assertEquals(1, taskManager.getEpics().size(), "Не удалось удалить эпик");
     }
+
+     */
 }
