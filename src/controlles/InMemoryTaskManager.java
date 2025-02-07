@@ -224,6 +224,9 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteEpics(int id) {
         Epic epic = epicHashMap.get(id);
+        if (epic == null) {
+            return;
+        }
         for (Integer subTaskId : epic.getSubTaskId()) {
             if (taskForTime.contains(getSubTaskById(subTaskId))) {
                 taskForTime.remove(getSubTaskById(subTaskId));
