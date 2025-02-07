@@ -1,15 +1,17 @@
+package resources;
+
 import controlles.*;
 import model.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Set;
 
-public class MainHistory {
+public class MainMemorry {
     static TaskManager taskManager;
 
     public static void main(String[] args) {
-        taskManager = Managers.getDefault();
+        taskManager = new InMemoryTaskManager();
         Task task1 = new Task("Задача 1", "Описание 1", Duration.ofSeconds(50), null); //id = 1
         Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofMinutes(35), LocalDateTime.of(2025, 02, 04, 00, 00)); //id = 2
         taskManager.add(task1);
@@ -19,11 +21,13 @@ public class MainHistory {
         taskManager.add(epic1);
         taskManager.add(epic2);
         SubTask subTask1 = new SubTask("подзадача 1", "описание 1", epic1.getId(),  Duration.ofMinutes(3), LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 5
-        SubTask subTask2 = new SubTask("подзадача 2", "описание 2", epic1.getId(),  Duration.ofMinutes(4), LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 6
-        SubTask subTask3 = new SubTask("подзадача 3", "описание 3", epic1.getId(),  Duration.ofMinutes(5), LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 7
+        SubTask subTask2 = new SubTask("подзадача 2", "описание 2", epic1.getId(),  Duration.ofMinutes(4), LocalDateTime.of(2025, 02, 04, 00, 00)); //id = 6
+        SubTask subTask3 = new SubTask("подзадача 3", "описание 3", epic1.getId(),  Duration.ofMinutes(5), LocalDateTime.of(2025, 02, 01, 00, 00)); //id = 7
         taskManager.add(subTask1);
         taskManager.add(subTask2);
         taskManager.add(subTask3);
+
+        System.out.println(taskManager.getPrioritizedTasks().toString());
 
         printAllTasks(taskManager);
         System.out.println("-".repeat(120));
@@ -39,15 +43,15 @@ public class MainHistory {
         taskManager.getSubTaskById(6);
         taskManager.getTaskByid(1);
         taskManager.getTaskByid(2);
-        //printHistory(taskManager);
+        print(taskManager);
         System.out.println("-".repeat(120));
         System.out.println("Вывод истории после удаления задачи с id = 1");
         taskManager.deleteTasks(1);
-        //printHistory(taskManager);
+        print(taskManager);
         System.out.println("-".repeat(120));
         System.out.println("Вывод истории после удаления эпика с тремя подзадачами (id 3)");
         taskManager.deleteEpics(3);
-        //printHistory(taskManager);
+        print(taskManager);
     }
 
     private static void printAllTasks(TaskManager manager) {
@@ -68,8 +72,8 @@ public class MainHistory {
         }
     }
 
-    public static void printHistory(TaskManager taskManager) {
-        ArrayList<Task> history = taskManager.getHistory();
+    public static void print(TaskManager taskManager) {
+        Set<Task> history = taskManager.getPrioritizedTasks();
         int index = 1;
         for (Task task : history) {
             System.out.println(index + "  " + task);

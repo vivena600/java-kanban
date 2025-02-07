@@ -33,6 +33,10 @@ public class Epic extends Task {
         super(title, descryption, duration, startTime);
     }
 
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;
     }
