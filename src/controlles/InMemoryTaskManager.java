@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
-    private Set<Task> setTaskForTime = new TreeSet<>();
+    private TreeSet<Task> taskForTime = new TreeSet<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
@@ -45,12 +45,14 @@ public class InMemoryTaskManager implements TaskManager {
         }
         epic.getSubTaskId().add(subTask.getId());
         updateEpicStatuc(epic);
+        epicEndTime(epic);
     }
 
     @Override
     public void update(SubTask subTask) {
         subTaskHashMap.put(subTask.getId(), subTask);
         updateEpicStatuc(epicHashMap.get(subTask.getEpicId()));
+        epicEndTime(epicHashMap.get(subTask.getEpicId()));
     }
 
     @Override
@@ -99,6 +101,7 @@ public class InMemoryTaskManager implements TaskManager {
             endTime = endTime.plus(subTask.getDuration());
             durationEpic = durationEpic.plus(subTask.getDuration());
         }
+        epic = new Epic(epic.getTitle(), epic.getDescription(), epic.getId(), durationEpic, epic.getEndTime());
         epic.setEndTime(endTime);
     }
 
@@ -158,6 +161,7 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic != null) {
             epic.getSubTaskId().remove((Integer) id);
             updateEpicStatuc(epic);
+            epicEndTime(epic);
         }
         historyManager.remove(id);
         subTaskHashMap.remove(id);
@@ -228,6 +232,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     public Set<Task> getPrioritizedTasks() {
-        return setTaskForTime;
+        return taskForTime;
     }
 }

@@ -26,10 +26,10 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        if (description.equals(0)) {
-            return startTime;
+        if (startTime != null) {
+            return startTime.plus(duration);
         }
-        return  startTime.plus(duration);
+        return null;
     }
 
     public void setDescription(String description) {
@@ -95,8 +95,8 @@ public class Task {
                 ", title = '" + title + '\'' +
                 ", status = '" + status + '\'' +
                 ", duration = " + duration.toMinutes() +
-                ", startTime = " + startTime.format(formatter) +
-                ", endTime = " + getEndTime().format(formatter)+
+                ", startTime = " + (startTime != null ? startTime.format(formatter) : "null") +
+                ", endTime = " + (getEndTime() != null ? getEndTime().format(formatter) : "null") +
                 '}';
     }
 
