@@ -22,6 +22,8 @@ public interface TaskManager {
 
     void updateEpicStatuc(Epic epic);
 
+    void updateEpicDuration(Epic epic);
+
     void clearAllTask();
 
     void deleteTask();

@@ -1,5 +1,6 @@
 package controlles;
 
+import comparartor.LocalDataTimeComparator;
 import model.*;
 
 import java.time.Duration;
@@ -10,7 +11,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class InMemoryTaskManager implements TaskManager {
-    private TreeSet<Task> taskForTime = new TreeSet<>();
+    private TreeSet<Task> taskForTime = new TreeSet<>(new LocalDataTimeComparator());
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
@@ -21,10 +22,19 @@ public class InMemoryTaskManager implements TaskManager {
         return nextId++;
     }
 
+    public Set<Task> getPrioritizedTasks() {
+        return taskForTime;
+    }
+
     @Override
     public void add(Task task) {
         task.setId(counterId());
         taskHashMap.put(task.getId(), task);
+        /*if (task.getStartTime() != null) {
+            taskForTime.add(task);
+        }
+
+         */
     }
 
     @Override
@@ -45,13 +55,16 @@ public class InMemoryTaskManager implements TaskManager {
         }
         epic.getSubTaskId().add(subTask.getId());
         updateEpicStatuc(epic);
+        updateEpicDuration(epic);
         epicEndTime(epic);
+        //taskForTime.add(subTask);
     }
 
     @Override
     public void update(SubTask subTask) {
         subTaskHashMap.put(subTask.getId(), subTask);
         updateEpicStatuc(epicHashMap.get(subTask.getEpicId()));
+        updateEpicDuration(getEpicsById(subTask.getId()));
         epicEndTime(epicHashMap.get(subTask.getEpicId()));
     }
 
@@ -59,6 +72,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void add(Epic epic) {
         epic.setId(counterId());
         epicHashMap.put(epic.getId(), epic);
+        //taskForTime.add(epic);
     }
 
     @Override
@@ -88,6 +102,17 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    @Override
+    public void updateEpicDuration(Epic epic) {
+        Duration duration = Duration.ofMinutes(0);
+        for (int indexIdSubtask : epic.getSubTaskId()){
+            Duration durationSubTask = getSubTaskById(indexIdSubtask).getDuration();
+            if (durationSubTask != null) {
+                duration = duration.plus(durationSubTask);
+            }
+        }
+        epic.setDuration(duration);
+    }
     public void epicEndTime(Epic epic) {
         LocalDateTime endTime;
         Duration durationEpic = Duration.ofMinutes(0);
@@ -110,14 +135,16 @@ public class InMemoryTaskManager implements TaskManager {
         deleteSubtasks();
         deleteTask();
         deleteEpic();
+        taskForTime.clear();
     }
 
     @Override
     public void deleteTask() {
         for (Task task : taskHashMap.values()) {
             historyManager.remove(task.getId());
+            //taskForTime.add(task);
         }
-        taskHashMap.clear();
+        //taskHashMap.clear();
     }
 
     @Override
@@ -126,9 +153,11 @@ public class InMemoryTaskManager implements TaskManager {
             if (epic != null) {
                 for (Integer indexSubTask : epic.getSubTaskId()) {
                     historyManager.remove(indexSubTask);
+                    //taskForTime.add(getSubTaskById(indexSubTask));
                 }
                 epic.getSubTaskId().clear();
             }
+            updateEpicDuration(epic);
         }
         subTaskHashMap.clear();
     }
@@ -151,7 +180,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTasks(int id) {
         historyManager.remove(id);
-        taskHashMap.remove(id);
+        //taskHashMap.remove(id);
     }
 
     @Override
@@ -229,9 +258,5 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public ArrayList<Task> getHistory() {
         return  new ArrayList<>(historyManager.getHistoryTask());
-    }
-
-    public Set<Task> getPrioritizedTasks() {
-        return taskForTime;
     }
 }
