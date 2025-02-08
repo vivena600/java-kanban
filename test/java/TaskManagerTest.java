@@ -1,15 +1,20 @@
-import model.*;
 import controlles.InMemoryTaskManager;
-import org.junit.jupiter.api.BeforeAll;
+import controlles.TaskManager;
+import model.Epic;
+import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTaskManagerTest {
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+abstract class TaskManagerTest<T extends TaskManager> {
     static InMemoryTaskManager taskManager;
     static Task task;
     static Epic epic;
@@ -102,10 +107,5 @@ class InMemoryTaskManagerTest {
         assertNotNull(subTasks, "Подзадачи не возвращаются");
         assertEquals(2, subTasks.size(), "Выводится неверное количество подзадач");
         assertEquals(subTask2, subTasks.get(0), "Задачи в эпике не совпадают");
-    }
-
-    @Test
-    void deleteById() {
-
     }
 }

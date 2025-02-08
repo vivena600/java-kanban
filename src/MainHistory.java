@@ -41,15 +41,16 @@ public class MainHistory {
         taskManager.getSubTaskById(6);
         taskManager.getTaskByid(1);
         taskManager.getTaskByid(2);
-        //printHistory(taskManager);
+        printHistory(taskManager);
+
         System.out.println("-".repeat(120));
         System.out.println("Вывод истории после удаления задачи с id = 1");
         taskManager.deleteTasks(1);
-        //printHistory(taskManager);
+        printHistory(taskManager);
         System.out.println("-".repeat(120));
         System.out.println("Вывод истории после удаления эпика с тремя подзадачами (id 3)");
         taskManager.deleteEpics(3);
-        //printHistory(taskManager);
+        printHistory(taskManager);
     }
 
     private static void printAllTasks(TaskManager manager) {

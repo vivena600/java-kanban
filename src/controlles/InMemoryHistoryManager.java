@@ -3,6 +3,8 @@ package controlles;
 import model.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private Node headNode;
@@ -19,11 +21,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public ArrayList<Task> getHistoryTask() {
-        ArrayList<Task> taskHistory = new ArrayList<>();
-        for (Node node : historyHashMap.values()) {
-            taskHistory.add((Task) node.task);
-        }
-        return taskHistory;
+        List<Task> taskHistory  = historyHashMap.values().stream()
+                .map(node -> node.task)
+                .collect(Collectors.toList());
+        return new ArrayList<>(taskHistory);
     }
 
     @Override

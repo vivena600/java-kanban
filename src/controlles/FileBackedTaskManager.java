@@ -136,7 +136,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         File file = new File("src/resources/test.csv");
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.getAbsolutePath());
         Task task1 = new Task("Задача 1", "Описание 1",  Duration.ofSeconds(50),
-                LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 1
+                LocalDateTime.of(2025, 02, 04, 00, 00)); //id = 1
         Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofSeconds(3),
                 LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 2
         fileBackedTaskManager.add(task1);
@@ -146,11 +146,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         fileBackedTaskManager.add(epic1);
         fileBackedTaskManager.add(epic2);
         SubTask subTask1 = new SubTask("подзадача 1", "описание 1", epic1.getId(),
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 5
+                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 06, 00, 00)); //id = 5
         SubTask subTask2 = new SubTask("подзадача 2", "описание 2", epic1.getId(),
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 6
+                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 06, 00, 00)); //id = 6
         SubTask subTask3 = new SubTask("подзадача 3", "описание 3", epic1.getId(),
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 7
+                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 07, 00, 00)); //id = 7
         fileBackedTaskManager.add(subTask1);
         fileBackedTaskManager.add(subTask2);
         fileBackedTaskManager.add(subTask3);
@@ -261,6 +261,4 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public Set<Task> getPrioritizedTasks() {
         return super.getPrioritizedTasks(); 
     }
-
-
 }

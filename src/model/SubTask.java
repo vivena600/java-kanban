@@ -4,10 +4,22 @@ import controlles.TypeTask;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class SubTask extends Task {
     private int epicId;
+
+    public SubTask(String title, String description, TaskStatus status, int id, int epicId,  Duration duration,
+                   LocalDateTime startTime) {
+        super(title, description, status, id, duration, startTime);
+        this.epicId = epicId;
+        this.status = status;
+    }
+
+    public SubTask(String title, String description, int epicId, Duration duration, LocalDateTime startTime) {
+        super(title, description, duration, startTime);
+        this.epicId = epicId;
+        this.status = TaskStatus.NEW;
+    }
 
     public int getEpicId() {
         return epicId;
@@ -34,18 +46,5 @@ public class SubTask extends Task {
                 ", startTime = " + startTime.format(formatter) +
                 ", endTime = " + getEndTime().format(formatter)+
                 '}';
-    }
-
-    public SubTask(String title, String description, TaskStatus status, int id, int epicId,  Duration duration,
-                   LocalDateTime startTime) {
-        super(title, description, status, id, duration, startTime);
-        this.epicId = epicId;
-        this.status = status;
-    }
-
-    public SubTask(String title, String description, int epicId, Duration duration, LocalDateTime startTime) {
-        super(title, description, duration, startTime);
-        this.epicId = epicId;
-        this.status = TaskStatus.NEW;
     }
 }
