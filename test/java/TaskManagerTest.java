@@ -10,102 +10,134 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 abstract class TaskManagerTest<T extends TaskManager> {
-    static InMemoryTaskManager taskManager;
-    static Task task;
-    static Epic epic;
-    static SubTask subTask;
-    static SubTask subTask2;
-
-    @BeforeEach
-    void newTaskManager() {
-        taskManager = new InMemoryTaskManager();
-        task = new Task("Test addNewTask", "Test addNewTask description", Duration.ofMinutes(30), LocalDateTime.of(2025, 3, 5, 15, 15));
-        epic = new Epic("Test addNewSubStac epic", "Test addNewSubTask epic description", 2, null, null);
-        subTask = new SubTask("Test addNewSubTask", "Test add NewSubtask descriprion", 2, Duration.ofMinutes(12), LocalDateTime.of(2025, 3, 5, 14, 15));
-        subTask2 = new SubTask("Test addNewSubTask", "Test add NewSubtask descriprion", TaskStatus.IN_PROGRESS, 2, 2, Duration.ofMinutes(12), LocalDateTime.of(2025, 3, 5, 14, 10));
-
-        taskManager.add(task);
-        taskManager.add(epic);
-        taskManager.add(subTask);
-        taskManager.add(subTask2);
-    }
+    protected T manager;
 
     @Test
     void addNewTask() {
-        final Task savedTask = taskManager.getTaskByid(task.getId());
+        Task task = new Task("title", "description", Duration.ofMinutes(3), LocalDateTime.now());
+        manager.add(task);
+                List<Task> tasks = manager.getTasks();
 
-        assertNotNull(savedTask, "Задача не найдена.");
-        assertEquals(task, savedTask, "Задачи не совпадают.");
-
-        final ArrayList<Task> tasks = taskManager.getTasks();
-
-        assertNotNull(tasks, "Задачи не возвращаются.");
-        assertEquals(1, tasks.size(), "Неверное количество задач.");
-        assertEquals(task, tasks.get(0), "Задачи не совпадают.");
-
-        Task taskTwin = new Task("Task", "startTime equals task", Duration.ofMinutes(50),
-                LocalDateTime.of(2025, 3, 5, 15, 12));
-        taskManager.add(taskTwin);
-
-        assertNotNull(tasks, "Задачи не возвращаются.");
-        assertFalse(taskManager.getTasks().contains(taskTwin), "Не корректная работа при пересечнии");
-        assertEquals(1, tasks.size(), "Неверное количество задач.");
-        assertEquals(task, tasks.get(0), "Задачи не совпадают.");
+        assertEquals(task.getStatus(), TaskStatus.NEW, "Не корректный статус при создании нового Task");
+        assertEquals(tasks.size(), 1, "задача не записалась в менеджер");
     }
 
     @Test
     void addNewSubTask() {
-        final  SubTask savedSubTask = taskManager.getSubTaskById(subTask.getId());
+        Epic epic = new Epic("title", "description", null, null);
+        SubTask subTask = new SubTask("title", "description", epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.now());
+        manager.add(epic);
+        manager.add(subTask);
+        List<Task> subTasks = manager.getSubTasks();
 
-        assertNotNull(savedSubTask, "Задача не найдена");
-        assertEquals(savedSubTask, subTask, "Задачи не совпадают");
-        assertEquals(savedSubTask.getStatus(), TaskStatus.NEW, "Статус задачи не совпадает");
-
-        final ArrayList<Task> subTasks = taskManager.getSubTasks();
-
-        assertNotNull(subTasks, "Подзадачи не возвращаются");
-        assertEquals(1, subTasks.size(), "Неверное количество задач, возможно неправильное добавление при пересечении");
-        assertEquals(subTask, subTasks.get(0), "Задачи не совпадают");
+        assertEquals(subTask.getStatus(), TaskStatus.NEW, "Не корректный статус при создании нового subTask");
+        assertEquals(subTasks.size(), 2, "задача не записалась в менеджер");
+        assertEquals(epic.getSubTaskId().get(0), subTask.getId(), "У эпика не корректный вариант подзадачи");
     }
 
     @Test
     void addNewEpic() {
-        //добавлены задачи с пересечением subTask и subTask2
-        final Epic savedEpic = taskManager.getEpicsById(epic.getId());
-        final ArrayList<Task> epics = taskManager.getEpics();
-        assertNotNull(epics, "Эпики не возвращаются");
-        assertEquals(1, epics.size(), "Неверное количество задач");
-        assertEquals(epic, epics.get(0), "Эпики не совпадают");
-        assertEquals(TaskStatus.NEW, epic.getStatus(), "Статусы эпиков не совпадают");
+        Epic epic = new Epic("title", "description", null, null);
+        manager.add(epic);
+        List<Task> tasks = manager.getEpics();
 
-        //подзадача без пересечения
-        subTask2 = new SubTask("Test addNewSubTask", "Test add NewSubtask descriprion", TaskStatus.DONE,
-                2, epic.getId(), Duration.ofMinutes(5),
-                LocalDateTime.of(2025, 3, 21, 13, 10));
-        taskManager.add(subTask2);
-        taskManager.update(epic);
+        assertEquals(epic.getStatus(), TaskStatus.NEW, "Не корректный статус при создании нового Epic");
+        assertEquals(tasks.size(), 1, "задача не записалась в менеджер");
+        assertEquals(epic.getSubTaskId().size(), 0, "В Эпике не корректное число подзадач");
 
-        assertEquals(TaskStatus.IN_PROGRESS, epic.getStatus(), "Статусы эпиков не совпадают");
-        final ArrayList<SubTask> subTasks = taskManager.getEpicsSupTask(epic);
-        assertNotNull(subTasks, "Подзадачи не возвращаются");
-        assertEquals(2, subTasks.size(), "Выводится неверное количество подзадач");
-        assertEquals(subTask2, subTasks.get(0), "Задачи в эпике не совпадают");
+        SubTask subTask1 = new SubTask("title3", "discription3", epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 3, 3, 13, 15));
+        SubTask subTask2 = new SubTask("title4", "discription4", epic.getId(), Duration.ofMinutes(12),
+                LocalDateTime.of(2025, 3, 6, 14, 15));
 
-        SubTask subTaskUpdate = new SubTask("Test addNewSubTask", "Test add NewSubtask descriprion", TaskStatus.DONE,
-                subTask.getId(), epic.getId(), Duration.ofMinutes(5),
-                LocalDateTime.of(2025, 3, 21, 13, 10));
-        taskManager.update(subTaskUpdate);
-        taskManager.update(epic);
+        assertEquals(tasks.size(), 3, "задача не записалась в менеджер");
+        assertEquals(epic.getSubTaskId().size(), 2, "В Эпике не корректное число подзадач");
+    }
 
-        assertEquals(TaskStatus.DONE, epic.getStatus(), "Статусы эпиков не совпадают");
-        final ArrayList<SubTask> subTasks2 = taskManager.getEpicsSupTask(epic);
-        assertNotNull(subTasks, "Подзадачи не возвращаются");
-        assertEquals(2, subTasks.size(), "Выводится неверное количество подзадач");
-        assertEquals(subTask2, subTasks.get(0), "Задачи в эпике не совпадают");
+    @Test
+    void statusEpic() {
+        Epic epic = new Epic("title", "description", null, null);
+        manager.add(epic);
+
+        assertEquals(epic.getStatus(), TaskStatus.NEW, "Не корректный статус при создании нового Epic");
+
+        SubTask subTask1 = new SubTask("title3", "discription3", epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 3, 3, 13, 15));
+        SubTask subTask2 = new SubTask("title4", "discription4", epic.getId(), Duration.ofMinutes(12),
+                LocalDateTime.of(2025, 3, 6, 14, 15));
+
+        manager.add(new SubTask("title3", "discription3",TaskStatus.IN_PROGRESS, subTask1.getId(),
+                epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 3, 3, 13, 15)));
+        manager.add(subTask2);
+        assertEquals(epic.getStatus(), TaskStatus.IN_PROGRESS, "Не правильный статус при изменении одной " +
+                "задачи на IN_PROGRESS");
+
+        SubTask newSubTask2 = new SubTask("title4", "discription4",TaskStatus.DONE, subTask2.getId(),
+                epic.getId(), Duration.ofMinutes(12),
+                LocalDateTime.of(2025, 3, 6, 14, 15));
+        manager.update(newSubTask2);
+        assertEquals(epic.getStatus(), TaskStatus.IN_PROGRESS, "Не правильный статус при изменении одной " +
+                "задачи на IN_PROGRESS, а другой на Done");
+
+        SubTask newSubTask1 = new SubTask("title3", "discription3",TaskStatus.DONE, subTask1.getId(),
+                epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 3, 3, 13, 15));
+        manager.update(newSubTask1);
+        assertEquals(epic.getStatus(), TaskStatus.DONE, "Не правильный статус при изменении одной " +
+                "всех задач на Done");
+    }
+
+
+    @Test
+    void deleteAllTask() {
+
+    }
+
+    @Test
+    void deleteAllEpics() {
+
+    }
+
+    @Test
+    void deleteAllSubtask() {
+
+    }
+
+    @Test
+    void getAllTasks() {
+
+    }
+
+    @Test
+    void getTaskById() {
+
+    }
+
+    @Test
+    void getAllEpics() {
+
+    }
+
+    @Test
+    void getEpicById() {
+
+    }
+
+    @Test
+    void getAllSubtask() {
+
+    }
+
+    @Test
+    void getAllSubtaskById() {
+
     }
 }
