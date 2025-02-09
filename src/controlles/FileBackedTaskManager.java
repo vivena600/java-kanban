@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private String fileName;
@@ -135,10 +134,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public static void main(String[] args) {
         File file = new File("src/resources/test.csv");
         FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(file.getAbsolutePath());
-        Task task1 = new Task("Задача 1", "Описание 1",  Duration.ofSeconds(50),
+        Task task1 = new Task("Задача 1", "Описание 1",  Duration.ofMinutes(1),
                 LocalDateTime.of(2025, 02, 04, 00, 00)); //id = 1
-        Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofSeconds(3),
-                LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 2
+        Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 02, 03, 02, 00)); //id = 2
         fileBackedTaskManager.add(task1);
         fileBackedTaskManager.add(task2);
         Epic epic1 = new Epic("Эпик 1", "эпик с 3 подзадачами",  null, null); //id = 3
@@ -146,23 +145,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         fileBackedTaskManager.add(epic1);
         fileBackedTaskManager.add(epic2);
         SubTask subTask1 = new SubTask("подзадача 1", "описание 1", epic1.getId(),
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 06, 00, 00)); //id = 5
+                Duration.ofMinutes(2), LocalDateTime.of(2025, 02, 06, 00, 00)); //id = 5
         SubTask subTask2 = new SubTask("подзадача 2", "описание 2", epic1.getId(),
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 06, 00, 00)); //id = 6
+                Duration.ofMinutes(2), LocalDateTime.of(2025, 02, 06, 00, 00)); //id = 6
         SubTask subTask3 = new SubTask("подзадача 3", "описание 3", epic1.getId(),
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 07, 00, 00)); //id = 7
+                Duration.ofMinutes(2), LocalDateTime.of(2025, 02, 07, 00, 00)); //id = 7
         fileBackedTaskManager.add(subTask1);
         fileBackedTaskManager.add(subTask2);
         fileBackedTaskManager.add(subTask3);
 
-        Task task2Update = new Task("Задача 2", "Описание 2", TaskStatus.IN_PROGRESS, 2,
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 03, 00, 00));
-        fileBackedTaskManager.update(task2Update);
+        Task task1Update = new Task("Задача 1", "Описание 1", TaskStatus.IN_PROGRESS, 1,
+                Duration.ofMinutes(1), LocalDateTime.of(2025, 02, 03, 00, 00));
+        fileBackedTaskManager.update(task1Update);
         FileBackedTaskManager newFileBacked = loadFromFile(file);
-        Task task3 = new Task("Задача 3", "Описание 3",  Duration.ofSeconds(50),
-                LocalDateTime.of(2025, 02, 03, 00, 00)); //id = 8
-        Task task1Update = new Task("Задача 1", "Описание 1", TaskStatus.DONE, 1,
-                Duration.ofSeconds(50), LocalDateTime.of(2025, 02, 03, 00, 00));
+        Task task3 = new Task("Задача 3", "Описание 3",  Duration.ofMinutes(60),
+                LocalDateTime.of(2025, 02, 05, 00, 00)); //id = 8
         newFileBacked.update(task1Update);
         newFileBacked.add(task3);
     }
