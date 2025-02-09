@@ -44,7 +44,7 @@ public class SubTask extends Task {
                 ", status = '" + status + '\'' +
                 ", duration = " + duration.toMinutes() +
                 ", startTime = " + startTime.format(formatter) +
-                ", endTime = " + getEndTime().format(formatter)+
+                ", endTime = " + getEndTime().format(formatter) +
                 '}';
     }
 }
