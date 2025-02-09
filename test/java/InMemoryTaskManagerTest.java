@@ -23,17 +23,25 @@ class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     @BeforeEach
     void input() {
         manager = new InMemoryTaskManager();
-        /*
-        task = new Task("Test addNewTask", "Test addNewTask description", Duration.ofMinutes(30), LocalDateTime.of(2025, 3, 5, 15, 15));
-        epic = new Epic("Test addNewSubStac epic", "Test addNewSubTask epic description", 2, null, null);
-        subTask = new SubTask("Test addNewSubTask", "Test add NewSubtask descriprion", 2, Duration.ofMinutes(12), LocalDateTime.of(2025, 3, 5, 14, 15));
-        subTask2 = new SubTask("Test addNewSubTask", "Test add NewSubtask descriprion", TaskStatus.IN_PROGRESS, 2, 2, Duration.ofMinutes(12), LocalDateTime.of(2025, 3, 5, 14, 10));
+    }
 
-        taskManager.add(task);
-        taskManager.add(epic);
-        taskManager.add(subTask);
-        taskManager.add(subTask2);
+    @Override
+    @Test
+    void updateEndTime() {
+        Epic epic = new Epic("title3", "discription3", null, null);
+        manager.add(epic);
+        SubTask subTask1 = new SubTask("title3", "discription3", epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 3, 3, 13, 15));
+        SubTask subTask2 = new SubTask("title4", "discription4", epic.getId(), Duration.ofMinutes(12),
+                LocalDateTime.of(2025, 3, 6, 15, 15));
+        manager.add(subTask1);
+        manager.add(subTask2);
 
-         */
+        assertEquals(epic.getStartTime(),  LocalDateTime.of(2025, 3, 3, 13, 15),
+                "Эпик неправильно записывает начальное время");
+        assertEquals(epic.getDuration(), Duration.ofMinutes(15), "Не коррректное время выполнения эпика");
+        assertEquals(epic.getEndTime(), subTask1.getEndTime().plus(subTask2.getDuration()),
+                "Не коррректное время выполнения эпика");
+        assertEquals(epic.getSubTaskId().size(), 2, "В Эпике не корректное число подзадач");
     }
 }
