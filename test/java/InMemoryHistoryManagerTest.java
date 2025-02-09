@@ -111,7 +111,7 @@ public class InMemoryHistoryManagerTest {
         taskManager.getSubTaskById(10);
         taskManager.getSubTaskById(11);
 
-        taskManager.deleteTasks(1);
+        taskManager.deleteTask(1);
         assertNotNull(taskManager.getHistory(), "Не получилось получить историю просмотров");
         assertEquals(8, taskManager.getHistory().size(), "Не корректный размер истории");
         assertEquals(task3, taskManager.getHistory().get(0), "Не корректно записываются элементы в начало " +
@@ -135,7 +135,7 @@ public class InMemoryHistoryManagerTest {
         taskManager.getSubTaskById(10);
         taskManager.getSubTaskById(11);
 
-        taskManager.deleteEpics(8);
+        taskManager.deleteEpic(8);
         assertNotNull(taskManager.getHistory(), "Не получилось получить историю просмотров");
         assertEquals(6, taskManager.getHistory().size(), "Не корректный размер истории");
         assertEquals(task1, taskManager.getHistory().get(0), "Не корректно записываются элементы в начало " +
@@ -162,7 +162,7 @@ public class InMemoryHistoryManagerTest {
         taskManager.getSubTaskById(11);
         System.out.println(taskManager.getHistory().size());
 
-        taskManager.deleteTask();
+        taskManager.deleteTasks();
         System.out.println(taskManager.getHistory().size());
         System.out.println(taskManager.getHistory().toString());
         assertNotNull(taskManager.getHistory(), "Не получилось получить историю просмотров");
@@ -186,7 +186,7 @@ public class InMemoryHistoryManagerTest {
         taskManager.getSubTaskById(10);
         taskManager.getSubTaskById(11);
 
-        taskManager.deleteEpic();
+        taskManager.deleteEpics();
         assertNotNull(taskManager.getHistory(), "Не получилось получить историю просмотров");
         assertEquals(3, taskManager.getHistory().size(), "Не корректный размер истории после " +
                 "удаления всех задач");

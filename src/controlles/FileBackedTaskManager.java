@@ -154,6 +154,10 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         fileBackedTaskManager.add(subTask2);
         fileBackedTaskManager.add(subTask3);
 
+        SubTask subTask4 = new SubTask("подзадача 4", "описание 4", epic1.getId(),
+                Duration.ofMinutes(40), LocalDateTime.of(2025, 9, 9, 00, 00));
+        fileBackedTaskManager.add(subTask4);
+
         Task task1Update = new Task("Задача 1", "Описание 1", TaskStatus.IN_PROGRESS, 1,
                 Duration.ofMinutes(1), LocalDateTime.of(2025, 02, 03, 00, 00));
         fileBackedTaskManager.update(task1Update);
@@ -201,8 +205,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateEpicStatuc(Epic epic) {
-        super.updateEpicStatuc(epic);
+    public void updateEpicStatus(Epic epic) {
+        super.updateEpicStatus(epic);
         save();
     }
 
@@ -219,8 +223,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void deleteTask() {
-        super.deleteTask();
+    public void deleteTasks() {
+        super.deleteTasks();
         save();
     }
 
@@ -231,26 +235,26 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void deleteEpic() {
-        super.deleteEpic();
+    public void deleteEpics() {
+        super.deleteEpics();
         save();
     }
 
     @Override
-    public void deleteTasks(int id) {
-        super.deleteTasks(id);
+    public void deleteTask(int id) {
+        super.deleteTask(id);
         save();
     }
 
     @Override
-    public void deleteSubtasks(int id) {
-        super.deleteSubtasks(id);
+    public void deleteSubtask(int id) {
+        super.deleteSubtask(id);
         save();
     }
 
     @Override
-    public void deleteEpics(int id) {
-        super.deleteEpics(id);
+    public void deleteEpic(int id) {
+        super.deleteEpic(id);
         save();
     }
 }

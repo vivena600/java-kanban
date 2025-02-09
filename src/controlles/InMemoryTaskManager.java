@@ -27,8 +27,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Set<Task> getPrioritizedTasks() {
-        return taskForTime;
+    public List<Task> getPrioritizedTasks() {
+        return new ArrayList<>(taskForTime);
     }
 
     @Override
@@ -42,7 +42,10 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void update(Task task) {
-        taskHashMap.put(task.getId(), task);
+        if (task.getStartTime() != null && validatorTime(task)) {
+            taskForTime.add(task);
+            taskHashMap.put(task.getId(), task);
+        }
     }
 
     @Override
@@ -58,7 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
                 return;
             }
             epic.getSubTaskId().add(subTask.getId());
-            updateEpicStatuc(epic);
+            updateEpicStatus(epic);
             updateLocalTimeForEpic(epic);
             if (subTask.getStartTime() != null) {
                 taskForTime.add(subTask);
@@ -69,7 +72,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void update(SubTask subTask) {
         subTaskHashMap.put(subTask.getId(), subTask);
-        updateEpicStatuc(epicHashMap.get(subTask.getEpicId()));
+        updateEpicStatus(epicHashMap.get(subTask.getEpicId()));
         updateLocalTimeForEpic(epicHashMap.get(subTask.getEpicId()));
     }
 
@@ -77,9 +80,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void add(Epic epic) {
         epic.setId(counterId());
         epicHashMap.put(epic.getId(), epic);
-        if (epic.getStartTime() != null && epic.getDuration() != null) {
-            taskForTime.add(epic);
-        }
     }
 
     @Override
@@ -96,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateEpicStatuc(Epic epic) {
+    public void updateEpicStatus(Epic epic) {
         int completedTasks = 0;
         int newTasks = 0;
         for (Integer subId : epic.getSubTaskId()) {
@@ -131,10 +131,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpicEndTime(Epic epic) {
-        Duration duration = epic.getDuration();
-        if (epic.getDuration() != null && epic.getStartTime() != null) {
-            epic.setEndTime(epic.getStartTime().plus(duration));
+        LocalDateTime endTime = LocalDateTime.MIN;
+        for (int idSub : epic.getSubTaskId()) {
+            if (subTaskHashMap.get(idSub).getEndTime().isAfter(endTime)) {
+                endTime = subTaskHashMap.get(idSub).getEndTime();
+            }
         }
+        epic.setEndTime(endTime);
     }
 
     @Override
@@ -155,13 +158,13 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void clearAllTask() {
         deleteSubtasks();
-        deleteTask();
-        deleteEpic();
+        deleteTasks();
+        deleteEpics();
         taskForTime.clear();
     }
 
     @Override
-    public void deleteTask() {
+    public void deleteTasks() {
         taskHashMap.values().forEach(task -> {
                     historyManager.remove(task.getId());
                     taskForTime.remove(task);
@@ -185,7 +188,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpic() {
+    public void deleteEpics() {
         for (Epic epic : epicHashMap.values()) {
             if (epic != null) {
                 for (Integer indexSubTask : epic.getSubTaskId()) {
@@ -201,7 +204,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteTasks(int id) {
+    public void deleteTask(int id) {
         if (getTaskByid(id) != null) {
             taskForTime.remove(getTaskByid(id));
         }
@@ -210,7 +213,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteSubtasks(int id) {
+    public void deleteSubtask(int id) {
         SubTask subTask = subTaskHashMap.get(id);
         Epic epic = epicHashMap.get(subTask.getEpicId());
         if (epic != null) {
@@ -223,7 +226,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteEpics(int id) {
+    public void deleteEpic(int id) {
         Epic epic = epicHashMap.get(id);
         if (epic == null) {
             return;

@@ -5,7 +5,7 @@ import model.SubTask;
 import model.Task;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -21,7 +21,7 @@ public interface TaskManager {
 
     void update(Epic epic);
 
-    void updateEpicStatuc(Epic epic);
+    void updateEpicStatus(Epic epic);
 
     void updateLocalTimeForEpic(Epic epic);
 
@@ -33,17 +33,17 @@ public interface TaskManager {
 
     void clearAllTask();
 
-    void deleteTask();
+    void deleteTasks();
 
     void deleteSubtasks();
 
-    void deleteEpic();
+    void deleteEpics();
 
-    void deleteTasks(int id);
+    void deleteTask(int id);
 
-    void deleteSubtasks(int id);
+    void deleteSubtask(int id);
 
-    void deleteEpics(int id);
+    void deleteEpic(int id);
 
     ArrayList<Task> getHistory();
 
@@ -61,5 +61,5 @@ public interface TaskManager {
 
     Epic getEpicsById(int id);
 
-    Set<Task> getPrioritizedTasks();
+    List<Task> getPrioritizedTasks();
 }

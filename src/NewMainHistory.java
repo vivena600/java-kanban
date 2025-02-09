@@ -1,5 +1,3 @@
-package resources;
-
 import controlles.Managers;
 import controlles.TaskManager;
 import model.Epic;
@@ -48,7 +46,7 @@ public class NewMainHistory {
         taskManager.getEpicsById(epic1.getId());
         taskManager.getEpicsById(epic2.getId());
 
-        taskManager.deleteTask();
+        taskManager.deleteTasks();
         System.out.println(taskManager.getHistory().toString());
         System.out.println(taskManager.getHistory().size());
         System.out.println(taskManager.getTasks().toString());
