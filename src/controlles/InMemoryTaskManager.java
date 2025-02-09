@@ -120,7 +120,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpicDuration(Epic epic) {
         Duration duration = Duration.ofMinutes(0);
-        for (int indexIdSubtask : epic.getSubTaskId()){
+        for (int indexIdSubtask : epic.getSubTaskId()) {
             Duration durationSubTask = subTaskHashMap.get(indexIdSubtask).getDuration();
             if (durationSubTask != null) {
                 duration = duration.plus(durationSubTask);
@@ -148,7 +148,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         LocalDateTime startTime = subTaskList.stream()
                         .map(subTask -> subTask.getStartTime())
-                                .min(LocalDateTime ::compareTo).get();
+                                .min(LocalDateTime::compareTo).get();
         epic.setStartTime(startTime);
     }
 

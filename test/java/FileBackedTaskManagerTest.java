@@ -13,19 +13,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
+public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager> {
     File file;
     Task task1 = new Task("title1", "discription1", Duration.ofMinutes(1),
             LocalDateTime.of(2025, 3, 6, 13, 15));
     Epic epic1 = new Epic("title2", "discription2", null, null);
     SubTask subTask1 = new SubTask("title3", "discription3",epic1.getId(), Duration.ofMinutes(2),
             LocalDateTime.of(2025, 5, 5, 4, 4));
-    /*
-    Task task2 = new Task("title9", "discription9");
-    Task task3 = new Task("title10", "discription10");
-    Task task4 = new Task("title11", "discription11");
-
-     */
 
     @BeforeEach
     void initialization() throws IOException {
