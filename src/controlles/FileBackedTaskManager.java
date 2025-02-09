@@ -5,7 +5,6 @@ import model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -46,6 +45,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             startTime = String.valueOf(task.getStartTime().format(formatter));
             endTime =  String.valueOf(task.getEndTime().format(formatter)); 
         }
+
         List<String> line = new ArrayList<>(List.of(String.valueOf(task.getId()), String.valueOf(getType(task)),
                 task.getTitle(), String.valueOf(task.getStatus()), task.getDescription(),
                 duration, startTime,endTime));
@@ -255,10 +255,5 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void deleteEpics(int id) {
         super.deleteEpics(id);
         save();
-    }
-
-    @Override
-    public Set<Task> getPrioritizedTasks() {
-        return super.getPrioritizedTasks(); 
     }
 }
