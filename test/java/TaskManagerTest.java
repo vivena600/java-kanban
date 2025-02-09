@@ -1,3 +1,4 @@
+import controlles.FileBackedTaskManager;
 import controlles.InMemoryTaskManager;
 import controlles.TaskManager;
 import model.Epic;
@@ -7,12 +8,14 @@ import model.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest<T extends TaskManager> {
     protected T manager;
@@ -153,6 +156,16 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void deleteAllSubtask() {
+
+    }
+
+    @Test
+    void saveFile() throws IOException {
+
+    }
+
+    @Test
+    void loadEmptyFile() throws IOException {
 
     }
 }
