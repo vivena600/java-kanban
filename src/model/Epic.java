@@ -1,12 +1,9 @@
 package model;
 
-import controlles.InMemoryTaskManager;
-import controlles.TaskManager;
 import controlles.TypeTask;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Epic extends Task {
