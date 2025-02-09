@@ -42,7 +42,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             endTime = "null";
         }  else {
             startTime = String.valueOf(task.getStartTime().format(formatter));
-            endTime =  String.valueOf(task.getEndTime().format(formatter)); 
+            endTime = String.valueOf(task.getEndTime().format(formatter));
         }
 
         List<String> line = new ArrayList<>(List.of(String.valueOf(task.getId()), String.valueOf(getType(task)),
