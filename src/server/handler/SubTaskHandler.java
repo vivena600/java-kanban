@@ -1,4 +1,4 @@
-package server;
+package server.handler;
 
 public class SubTaskHandler {
 }

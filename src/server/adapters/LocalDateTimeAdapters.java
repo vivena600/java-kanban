@@ -8,15 +8,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class LocalDateTimeAdapters  extends TypeAdapter<LocalDateTime> {
-    protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
+public class LocalDateTimeAdapters extends TypeAdapter<LocalDateTime> {
+    public DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
 
     @Override
     public void write(JsonWriter jsonWriter, LocalDateTime localDateTime) throws IOException {
-        if (localDateTime == null) {
-            jsonWriter.nullValue();
-            return;
-        }
         jsonWriter.value(localDateTime.format(formatter));
     }
 
