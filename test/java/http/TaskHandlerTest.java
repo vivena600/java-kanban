@@ -87,4 +87,29 @@ public class TaskHandlerTest {
                 "несуществующую задачу");
         assertEquals("Not Found", response.body(), "Не совпадает ожидаемый ответ");
     }
+
+    @Test
+    void deleteTaskByNonExsistentId() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(START_URL + "/5"))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(response.statusCode(), 404, "Не корректный результат при попытке удалить" +
+                " несуществующую задачу");
+        assertEquals("Not Found", response.body(), "Не совпадает ожидаемый ответ");
+    }
+
+    @Test
+    void deleteTaskById() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(START_URL + "/1"))
+                .DELETE()
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(response.statusCode(), 200, "Не корректный результат при попытке удалить задачу");
+        assertEquals(gson.toJson(taskManager.getTasks()), response.body(), "Не совпадает ожидаемый ответ");
+    }
 }
