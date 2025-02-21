@@ -3,6 +3,7 @@ package server.handler;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import controlles.Managers;
 import controlles.TaskManager;
 
 import java.io.IOException;
@@ -17,8 +18,8 @@ public class BaseHttpHandler implements HttpHandler {
     protected Gson gson;
 
     public BaseHttpHandler(TaskManager taskManager) {
+        this.gson = Managers.getJson(); //почему так ???
         this.taskManager = taskManager;
-        this.gson = new Gson();
     }
 
     protected void sendText(HttpExchange exchange, String text, int statusCode) throws IOException {
@@ -40,16 +41,6 @@ public class BaseHttpHandler implements HttpHandler {
     protected void sendHasInteractions(HttpExchange exchange) throws IOException {
         sendText(exchange, "Not Acceptable", 500);
     }
-
-    /*
-    protected void writeResponse(HttpExchange exchange, String response, int code) throws IOException {
-        try (OutputStream os = exchange.getResponseBody()) {
-            exchange.sendResponseHeaders(code, 0);
-            os.write(response.getBytes(DEFAULT_CHARSET));
-        }
-    }
-
-     */
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {

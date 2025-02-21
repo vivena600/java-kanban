@@ -8,13 +8,11 @@ import controlles.InMemoryTaskManager;
 import controlles.Managers;
 import controlles.TaskManager;
 import model.Task;
+import model.TaskStatus;
 import server.handler.TaskHandler;
 
-import javax.sound.sampled.Port;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 public class HttpTaskServer {
     //класс для запуска программы
@@ -25,8 +23,9 @@ public class HttpTaskServer {
     private HistoryManager historyManager;
     private TaskHandler taskHandler;
 
-    public HttpTaskServer(InMemoryTaskManager taskManager) throws IOException {
+    public HttpTaskServer(TaskManager taskManager) throws IOException {
          this.taskManager = taskManager;
+         System.out.println(taskManager.getTasks().toString());
          server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
          server.createContext("/tasks", new TaskHandler(taskManager));
     }
@@ -36,5 +35,10 @@ public class HttpTaskServer {
         System.out.println("Startted HttpTaskServer " + PORT);
         System.out.println("http://localhost:" + PORT );
         server.start();
+    }
+
+    public void stop() {
+        server.stop(0);
+        System.out.println("Stopped HttpTaskServer");
     }
 }

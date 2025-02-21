@@ -24,6 +24,5 @@ public class Managers {
                 .registerTypeAdapter(Duration.class, new DurationAdapters())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapters())
                 .create();
-        //надо будет добавить адаптеры для даты и времени
     }
 }
