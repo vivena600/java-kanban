@@ -22,10 +22,21 @@ public class checkTaskHandler {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         taskManager = new InMemoryTaskManager();
+        Task task1 = new Task("Задача 1", "Описание 1",  Duration.ofMinutes(35),
+                LocalDateTime.of(2025, 01, 03, 00, 00));
+        taskManager.add(task1);
         Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofMinutes(35),
                 LocalDateTime.of(2025, 01, 04, 00, 00));
         taskManager.add(task2);
+        System.out.println("Get запрос на получение Task по id");
+        getTaskForid(taskManager, 1);
 
+        System.out.println("-".repeat(20));
+        System.out.println("Get запрос на получение Tasks");
+        getTasks(taskManager);
+    }
+
+    private static void getTasks(TaskManager taskManager) throws IOException, InterruptedException {
         URI task_url = URI.create("http://localhost:8080/tasks");
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
@@ -39,6 +50,22 @@ public class checkTaskHandler {
         System.out.println("Код - " + response.statusCode());
         System.out.println(response.body());
 
+        taskServer.stop();
+    }
+
+    private static void getTaskForid(TaskManager taskManager, int id) throws IOException, InterruptedException {
+        URI task_url = URI.create("http://localhost:8080/tasks/" + id);
+        HttpTaskServer taskServer = new HttpTaskServer(taskManager);
+        taskServer.start();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(task_url)
+                .GET()
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        System.out.println("Код - " + response.statusCode());
+        System.out.println(response.body());
         taskServer.stop();
     }
 }

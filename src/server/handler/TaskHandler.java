@@ -21,24 +21,25 @@ public class TaskHandler extends BaseHttpHandler {
     }
 
     protected void handlerGetTask(HttpExchange exchange) throws IOException {
-        //String[] url = exchange.getRequestURI().getPath().split("/");
-        response = gson.toJson(taskManager.getTasks());
-        sendText(exchange, response, 200);
-        System.out.println(getText(exchange));
-        /*
+        String[] url = exchange.getRequestURI().getPath().split("/");
         if (url.length == 2) {
             response = gson.toJson(taskManager.getTasks());
             sendText(exchange, response, 200);
-            System.out.println(getText(exchange));
-            return;
         } else {
-            int id = Integer.parseInt(url[2]);
-            //TaskManager task = (TaskManager) taskManager.getTaskByid(id);
-            //дальше как-то разобраться с gson
+            try {
+                int id = Integer.parseInt(url[2]);
+                Task task = taskManager.getTaskByid(id);
+                if (task == null) {
+                    sendNotFound(exchange);
+                } else {
+                    response = gson.toJson(task);
+                    sendText(exchange, response, 200);
+                }
+            } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
+                sendNotFound(exchange);
+            }
         }
-
-         */
-
+        System.out.println(getText(exchange));
     }
 
     @Override
