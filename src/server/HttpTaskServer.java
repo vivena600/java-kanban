@@ -9,6 +9,7 @@ import controlles.Managers;
 import controlles.TaskManager;
 import model.Task;
 import model.TaskStatus;
+import server.handler.SubTaskHandler;
 import server.handler.TaskHandler;
 
 import java.io.IOException;
@@ -25,9 +26,9 @@ public class HttpTaskServer {
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
          this.taskManager = taskManager;
-         System.out.println(taskManager.getTasks().toString());
          server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
          server.createContext("/tasks", new TaskHandler(taskManager));
+         server.createContext("/subTasks", new SubTaskHandler(taskManager));
     }
 
     //служебные методы
