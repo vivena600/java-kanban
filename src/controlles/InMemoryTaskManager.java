@@ -14,7 +14,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Task> taskHashMap = new HashMap<>();
     private HashMap<Integer, SubTask> subTaskHashMap = new HashMap<>();
     private HashMap<Integer, Epic> epicHashMap = new HashMap<>();
-    private int nextId = 1;
+    public int nextId = 1;
 
     public int counterId() {
         return nextId++;
@@ -34,6 +34,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void add(Task task) {
         task.setId(counterId());
+        //System.out.println("!" + task.getId());
         if (task.getStartTime() != null && validatorTime(task)) {
             taskForTime.add(task);
             taskHashMap.put(task.getId(), task);

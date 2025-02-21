@@ -3,6 +3,7 @@ package server.handler;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import controlles.InMemoryTaskManager;
@@ -15,7 +16,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 public class TaskHandler extends BaseHttpHandler {
-    protected InMemoryTaskManager memoryTaskManager = (InMemoryTaskManager) Managers.getDefault();
 
     public TaskHandler(TaskManager taskManager) throws IOException {
         super(taskManager);
@@ -47,32 +47,53 @@ public class TaskHandler extends BaseHttpHandler {
     protected void handlerPost(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
+        System.out.println("тело - " + body);
         JsonElement element = JsonParser.parseString(body);
         if (!element.isJsonObject()) {
             sendHasInteractions(exchange);
             return;
         }
-        JsonObject object = element.getAsJsonObject();
-        Task newTask = gson.fromJson(object, Task.class);
-
-        String[] url = exchange.getRequestURI().getPath().split("/");
-        if (url.length == 2) {
-            taskManager.add(newTask);
-            if (taskManager.getTaskByid(newTask.getId()) != newTask) {
-                response = gson.toJson("Not Acceptable");
-                sendText(exchange, response, 406);
-            }
-        } else {
-            int id = Integer.parseInt(url[2]);
-            if (taskManager.getTaskByid(id) == null) {
-                sendNotFound(exchange);
-            }
-            taskManager.update(newTask);
-            if (taskManager.getTaskByid(newTask.getId()) != newTask) {
-                response = gson.toJson("Not Acceptable");
-                sendText(exchange, response, 406);
-            }
+        try {
+            JsonObject object = element.getAsJsonObject();
+            System.out.println(object.toString());
+            //String request = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+            Task newTask = gson.fromJson(object, Task.class);
+            System.out.println(newTask.toString());
+        } catch (JsonSyntaxException ex) {
+            sendHasInteractions(exchange);
         }
+
+        /*if (request.isBlank()) {
+            sendNotFound(exchange);
+            return;
+        }
+
+        try {
+            Task newTask = gson.fromJson(request, Task.class);
+            System.out.println(newTask.toString());
+            String[] url = exchange.getRequestURI().getPath().split("/");
+            if (url.length == 2) {
+                taskManager.add(newTask);
+                if (taskManager.getTaskByid(newTask.getId()) != newTask) {
+                    response = gson.toJson("Not Acceptable");
+                    sendText(exchange, response, 406);
+                } else {
+                    int id = Integer.parseInt(url[2]);
+                    if (taskManager.getTaskByid(id) == null) {
+                        sendNotFound(exchange);
+                    }
+                    taskManager.update(newTask);
+                    if (taskManager.getTaskByid(newTask.getId()) != newTask) {
+                        response = gson.toJson("Not Acceptable");
+                        sendText(exchange, response, 406);
+                    }
+                }
+            }
+        } catch (JsonSyntaxException ex) {
+            sendHasInteractions(exchange);
+        }
+
+         */
     }
 
     protected void handlerDeleteTasksById(HttpExchange exchange) throws IOException {
