@@ -9,6 +9,7 @@ import controlles.Managers;
 import controlles.TaskManager;
 import model.Task;
 import model.TaskStatus;
+import server.handler.EpicHandler;
 import server.handler.SubTaskHandler;
 import server.handler.TaskHandler;
 
@@ -29,6 +30,7 @@ public class HttpTaskServer {
          server = HttpServer.create(new InetSocketAddress("localhost", 8080), 0);
          server.createContext("/tasks", new TaskHandler(taskManager));
          server.createContext("/subTasks", new SubTaskHandler(taskManager));
+         server.createContext("/epics", new EpicHandler(taskManager));
     }
 
     //служебные методы

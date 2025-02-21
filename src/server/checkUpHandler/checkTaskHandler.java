@@ -1,14 +1,11 @@
 package server.checkUpHandler;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import controlles.InMemoryTaskManager;
 import controlles.Managers;
 import controlles.TaskManager;
 import model.Task;
 import server.HttpTaskServer;
-import server.adapters.DurationAdapters;
-import server.adapters.LocalDateTimeAdapters;
 
 import java.io.IOException;
 import java.net.URI;
