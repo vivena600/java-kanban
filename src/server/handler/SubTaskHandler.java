@@ -3,7 +3,6 @@ package server.handler;
 import com.sun.net.httpserver.HttpExchange;
 import controlles.TaskManager;
 import model.SubTask;
-import model.Task;
 
 import java.io.IOException;
 
@@ -35,6 +34,22 @@ public class SubTaskHandler extends BaseHttpHandler {
         System.out.println(getText(exchange));
     }
 
+    protected void handlerDeleteSubTaskById(HttpExchange exchange) throws IOException {
+        String[] url = exchange.getRequestURI().getPath().split("/");
+        try {
+            int id = Integer.parseInt(url[2]);
+            if (taskManager.getSubTaskById(id) == null) {
+                sendNotFound(exchange);
+            } else {
+                taskManager.deleteTask(id);
+                response = gson.toJson(taskManager.getSubTasks());
+                sendText(exchange, response, 200);
+            }
+        } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
+            sendNotFound(exchange);
+        }
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String method = exchange.getRequestMethod();
@@ -43,7 +58,7 @@ public class SubTaskHandler extends BaseHttpHandler {
                 handlerGetSubTask(exchange);
                 break;
             case "DELETE":
-                //handlerDeleteTasksById(exchange);
+                handlerDeleteSubTaskById(exchange);
                 break;
             case "POST":
                 //handlerPost(exchange);

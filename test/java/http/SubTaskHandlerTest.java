@@ -95,7 +95,6 @@ public class SubTaskHandlerTest {
         assertEquals("Not Found", response.body(), "Не совпадает ожидаемый ответ");
     }
 
-    /*
     @Test
     void deleteTaskByNonExsistentId() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
@@ -112,14 +111,12 @@ public class SubTaskHandlerTest {
     @Test
     void deleteTaskById() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(START_URL + "/1"))
+                .uri(URI.create(START_URL + "/" + subTask1.getId()))
                 .DELETE()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         assertEquals(response.statusCode(), 200, "Не корректный результат при попытке удалить задачу");
-        assertEquals(gson.toJson(taskManager.getTasks()), response.body(), "Не совпадает ожидаемый ответ");
+        assertEquals(gson.toJson(taskManager.getSubTasks()), response.body(), "Не совпадает ожидаемый ответ");
     }
-
-     */
 }
