@@ -5,6 +5,8 @@ import controlles.Managers;
 import controlles.TaskManager;
 import model.Epic;
 import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -116,5 +118,69 @@ public class SubTaskHandlerTest {
 
         assertEquals(response.statusCode(), 200, "Не корректный результат при попытке удалить задачу");
         assertEquals(gson.toJson(taskManager.getSubTasks()), response.body(), "Не совпадает ожидаемый ответ");
+    }
+
+    @Test
+    void newSubTask() throws IOException, InterruptedException {
+        int sizeTasksBeforePost = taskManager.getSubTasks().size();
+        SubTask subTask3 = new SubTask("title4", "discription4", epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 12, 3, 13, 15));
+        SubTask subTask4 = new SubTask("title5", "discription5", epic.getId(), Duration.ofMinutes(12),
+                LocalDateTime.of(2025, 3, 6, 15, 15));
+        final HttpRequest.BodyPublisher body1 = HttpRequest.BodyPublishers.ofString(gson.toJson(subTask3));
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(START_URL))
+                .POST(body1)
+                .build();
+        HttpResponse<String> response1 = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(response1.statusCode(), 201, "Не корректный результат при попытке добавить" +
+                " подзадачу");
+        assertEquals(sizeTasksBeforePost + 1, taskManager.getSubTasks().size(), "Не корректный " +
+                "результат при попытке добавить подзадачу");
+
+        final HttpRequest.BodyPublisher body2 = HttpRequest.BodyPublishers.ofString(gson.toJson(subTask4));
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .uri(URI.create(START_URL))
+                .POST(body2)
+                .build();
+        HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+        assertEquals(response2.statusCode(), 406, "Не корректный результат при попытке добавить " +
+                "повторяющуюся задачу");
+        assertEquals(epic.getSubTaskId().size(), 3, "Не корректное количество подзадач в эпике");
+    }
+
+    @Test
+    void updateTask() throws IOException, InterruptedException {
+        int sizeTasksBeforePost = taskManager.getSubTasks().size();
+        SubTask newSubTask1 = new SubTask("title3", "discription3", TaskStatus.DONE, subTask1.getId(),
+                epic.getId(), Duration.ofMinutes(3),
+                LocalDateTime.of(2025, 12, 3, 13, 15));
+        final HttpRequest.BodyPublisher body1 = HttpRequest.BodyPublishers.ofString(gson.toJson(newSubTask1));
+        URI url = URI.create(START_URL + "/" + subTask1.getId());
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(url)
+                .POST(body1)
+                .build();
+        HttpResponse<String> response1 = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(response1.statusCode(), 201, "Не корректный результат при попытке изменить задачу");
+        assertEquals(sizeTasksBeforePost, taskManager.getSubTasks().size(), "Не корректный " +
+                "результат при попытке изменить подзадачу");
+        assertEquals(newSubTask1, taskManager.getSubTaskById(subTask1.getId()), "Не корректный update" +
+                " для подзадачи");
+
+        SubTask newSubTask2 = new SubTask("title4", "discription4", epic.getId(), Duration.ofMinutes(12),
+                LocalDateTime.of(2025, 3, 6, 15, 15));
+        final HttpRequest.BodyPublisher body2 = HttpRequest.BodyPublishers.ofString(gson.toJson(newSubTask2));
+        URI url2 = URI.create(START_URL + "/" + subTask2.getId());
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .uri(url2)
+                .POST(body2)
+                .build();
+        HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(response2.statusCode(), 406, "Не корректный результат при попытке изменить " +
+                "подзадачу, так как время пересекается с другими задачами");
     }
 }

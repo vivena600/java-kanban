@@ -165,14 +165,13 @@ public class TaskHandlerTest {
                 "результат при попытке изменить задачу");
         assertEquals(newTask1, taskManager.getTaskByid(task1.getId()), "Не корректный update для задачи");
 
-        int sizeTasksBeforePost2 = taskManager.getTasks().size();
         Task newTask2 = new Task("Задача 2", "Описание 2", TaskStatus.DONE, task2.getId(),
                 Duration.ofMinutes(35),
                 LocalDateTime.of(2025, 12, 03, 00, 00));
-        final HttpRequest.BodyPublisher body2 = HttpRequest.BodyPublishers.ofString(gson.toJson(newTask1));
+        final HttpRequest.BodyPublisher body2 = HttpRequest.BodyPublishers.ofString(gson.toJson(newTask2));
         URI url2 = URI.create(START_URL + "/" + task2.getId());
         HttpRequest request2 = HttpRequest.newBuilder()
-                .uri(url)
+                .uri(url2)
                 .POST(body2)
                 .build();
         HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());

@@ -18,7 +18,7 @@ public class TaskHandler extends BaseHttpHandler {
         System.out.println(taskManager.getTasks().toString());
     }
 
-    protected void handlerGetTask(HttpExchange exchange) throws IOException {
+    private void handlerGetTask(HttpExchange exchange) throws IOException {
         String[] url = exchange.getRequestURI().getPath().split("/");
         if (url.length == 2) {
             response = gson.toJson(taskManager.getTasks());
@@ -40,7 +40,7 @@ public class TaskHandler extends BaseHttpHandler {
         System.out.println(getText(exchange));
     }
 
-    protected void handlerPost(HttpExchange exchange) throws IOException {
+    private void handlerPost(HttpExchange exchange) throws IOException {
         String[] url = exchange.getRequestURI().getPath().split("/");
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
@@ -75,37 +75,9 @@ public class TaskHandler extends BaseHttpHandler {
         } catch (JsonSyntaxException ex) {
             sendHasInteractions(exchange);
         }
-
-        /*
-        try {
-            Task newTask = gson.fromJson(request, Task.class);
-            System.out.println(newTask.toString());
-            String[] url = exchange.getRequestURI().getPath().split("/");
-            if (url.length == 2) {
-                taskManager.add(newTask);
-                if (taskManager.getTaskByid(newTask.getId()) != newTask) {
-                    response = gson.toJson("Not Acceptable");
-                    sendText(exchange, response, 406);
-                } else {
-                    int id = Integer.parseInt(url[2]);
-                    if (taskManager.getTaskByid(id) == null) {
-                        sendNotFound(exchange);
-                    }
-                    taskManager.update(newTask);
-                    if (taskManager.getTaskByid(newTask.getId()) != newTask) {
-                        response = gson.toJson("Not Acceptable");
-                        sendText(exchange, response, 406);
-                    }
-                }
-            }
-        } catch (JsonSyntaxException ex) {
-            sendHasInteractions(exchange);
-        }
-
-         */
     }
 
-    protected void handlerDeleteTasksById(HttpExchange exchange) throws IOException {
+    private void handlerDeleteTasksById(HttpExchange exchange) throws IOException {
         String[] url = exchange.getRequestURI().getPath().split("/");
         try {
             int id = Integer.parseInt(url[2]);
