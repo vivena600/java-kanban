@@ -99,27 +99,4 @@ public class checkEpicHandler {
         System.out.println("Оставшиеся SubTask taskManager: " + gson.toJson(taskManager.getSubTasks()));
         taskServer.stop();
     }
-    /*
-
-    private static void postNewTask(TaskManager taskManager) throws IOException, InterruptedException {
-        Task task3 = new Task("Задача 3", "Описание 3",  Duration.ofMinutes(35),
-                LocalDateTime.of(2025, 01, 05, 00, 00));
-        URI task_url = URI.create("http://localhost:8080/tasks");
-        HttpTaskServer taskServer = new HttpTaskServer(taskManager);
-        taskServer.start();
-        HttpClient client = HttpClient.newHttpClient();
-        Gson gson = Managers.getJson();
-        final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(gson.toJson(task3));
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(task_url)
-                .POST(body)
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        System.out.println("Код - " + response.statusCode());
-        System.out.println(response.body());
-        taskServer.stop();
-    }
-
-     */
 }

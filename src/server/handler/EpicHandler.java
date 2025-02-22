@@ -57,6 +57,13 @@ public class EpicHandler extends BaseHttpHandler {
     }
 
     private void handlerPost(HttpExchange exchange) throws IOException {
+        String request = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+        System.out.println(request);
+        if (request.isBlank()) {
+            sendNotFound(exchange);
+            return;
+        }
+
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
         System.out.println(body);
@@ -64,13 +71,14 @@ public class EpicHandler extends BaseHttpHandler {
         if (!element.isJsonObject()) {
             sendHasInteractions(exchange);
             return;
+
         }
 
         try {
             System.out.println("Я в тру");
             JsonObject object = element.getAsJsonObject();
             System.out.println(object.toString());
-            Epic newEpic = gson.fromJson(object, Epic.class);
+            Task newEpic = gson.fromJson(object, Epic.class);
             System.out.println(newEpic.toString());
             taskManager.add(newEpic);
             sendText(exchange, "Successfully", 201);
