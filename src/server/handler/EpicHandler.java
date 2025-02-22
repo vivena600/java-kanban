@@ -1,11 +1,17 @@
 package server.handler;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import controlles.TaskManager;
 import model.Epic;
 import model.SubTask;
+import model.Task;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class EpicHandler extends BaseHttpHandler {
@@ -49,39 +55,29 @@ public class EpicHandler extends BaseHttpHandler {
         }
         System.out.println(getText(exchange));
     }
-    /*
 
-    protected void handlerPost(HttpExchange exchange) throws IOException {
+    private void handlerPost(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
+        System.out.println(body);
         JsonElement element = JsonParser.parseString(body);
         if (!element.isJsonObject()) {
             sendHasInteractions(exchange);
             return;
         }
-        JsonObject object = element.getAsJsonObject();
-        Task newTask = gson.fromJson(object, Task.class);
 
-        String[] url = exchange.getRequestURI().getPath().split("/");
-        if (url.length == 2) {
-            taskManager.add(newTask);
-            if (taskManager.getTaskByid(newTask.getId()) != newTask) {
-                response = gson.toJson("Not Acceptable");
-                sendText(exchange, response, 406);
-            }
-        } else {
-            int id = Integer.parseInt(url[2]);
-            if (taskManager.getTaskByid(id) == null) {
-                sendNotFound(exchange);
-            }
-            taskManager.update(newTask);
-            if (taskManager.getTaskByid(newTask.getId()) != newTask) {
-                response = gson.toJson("Not Acceptable");
-                sendText(exchange, response, 406);
-            }
+        try {
+            System.out.println("Я в тру");
+            JsonObject object = element.getAsJsonObject();
+            System.out.println(object.toString());
+            Epic newEpic = gson.fromJson(object, Epic.class);
+            System.out.println(newEpic.toString());
+            taskManager.add(newEpic);
+            sendText(exchange, "Successfully", 201);
+        } catch (JsonSyntaxException ex) {
+            sendHasInteractions(exchange);
         }
     }
-    */
 
     protected void handlerDeleteEpicById(HttpExchange exchange) throws IOException {
         String[] url = exchange.getRequestURI().getPath().split("/");
@@ -115,7 +111,7 @@ public class EpicHandler extends BaseHttpHandler {
                 handlerDeleteEpicById(exchange);
                 break;
             case "POST":
-                //handlerPost(exchange);
+                handlerPost(exchange);
                 break;
         }
         //exchange.close();

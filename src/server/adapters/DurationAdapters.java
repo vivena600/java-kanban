@@ -6,12 +6,15 @@ import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Instant;
 
 public class DurationAdapters extends TypeAdapter<Duration> {
     @Override
     public void write(JsonWriter jsonWriter, Duration duration) throws IOException {
-        jsonWriter.value(duration.toString());
+        if (duration == null) {
+            jsonWriter.nullValue();
+        } else {
+            jsonWriter.value(duration.toString());
+        }
     }
 
     @Override

@@ -9,10 +9,7 @@ import controlles.Managers;
 import controlles.TaskManager;
 import model.Task;
 import model.TaskStatus;
-import server.handler.EpicHandler;
-import server.handler.PrioritizedHandler;
-import server.handler.SubTaskHandler;
-import server.handler.TaskHandler;
+import server.handler.*;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -31,6 +28,7 @@ public class HttpTaskServer {
          server.createContext("/subTasks", new SubTaskHandler(taskManager));
          server.createContext("/epics", new EpicHandler(taskManager));
          server.createContext("/prioritized", new PrioritizedHandler(taskManager));
+         server.createContext("/history", new HistoryHandler(taskManager));
     }
 
     //служебные методы

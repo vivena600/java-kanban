@@ -15,12 +15,18 @@ public class Task {
     protected TaskStatus status;
     protected int id;
 
-    protected transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
+    protected transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+    public Task(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.status = TaskStatus.NEW; //по умолчанию
+    }
 
     public Task(String title, String description, Duration duration, LocalDateTime startTime) {
         this.title = title;
         this.description = description;
-        this.status = TaskStatus.NEW; //по умолчанию
+        this.status = TaskStatus.NEW;
         this.duration = duration;
         this.startTime = formattedTime(startTime);
     }

@@ -5,6 +5,8 @@ import controlles.Managers;
 import controlles.TaskManager;
 import model.Epic;
 import model.SubTask;
+import model.Task;
+import model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -139,5 +141,21 @@ public class EpicHandlerTest {
         assertEquals(response.statusCode(), 200, "Не корректный результат при попытке удалить задачу");
         assertEquals(gson.toJson("Successfully"), response.body(), "Не совпадает ожидаемый ответ");
         // TODO - сделать проверку на корректное удаление подзадач, которые находились внутриудаляемого эпика
+    }
+
+    @Test
+    void newEpic() throws IOException, InterruptedException {
+        int sizeTasksBeforePost = taskManager.getEpics().size();
+        Epic epic3 = new Epic("title3", "discription3");
+        final HttpRequest.BodyPublisher body1 = HttpRequest.BodyPublishers.ofString(gson.toJson(epic3));
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(START_URL))
+                .POST(body1)
+                .build();
+        HttpResponse<String> response1 = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(response1.statusCode(), 201, "Не корректный результат при попытке добавить эпик");
+        assertEquals(sizeTasksBeforePost + 1, taskManager.getTasks().size(), "Не корректный " +
+                "результат при попытке добавить эпик");
     }
 }
