@@ -1,14 +1,7 @@
 package server;
 
-import com.google.gson.Gson;
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
-import controlles.HistoryManager;
-import controlles.InMemoryTaskManager;
-import controlles.Managers;
 import controlles.TaskManager;
-import model.Task;
-import model.TaskStatus;
 import server.handler.*;
 
 import java.io.IOException;
@@ -16,7 +9,7 @@ import java.net.InetSocketAddress;
 
 public class HttpTaskServer {
     //класс для запуска программы
-    private final int PORT = 8080;
+    private static final int PORT = 8080;
     private HttpServer server;
 
     protected TaskManager taskManager;
@@ -34,7 +27,7 @@ public class HttpTaskServer {
     //служебные методы
     public void start() {
         System.out.println("Startted HttpTaskServer " + PORT);
-        System.out.println("http://localhost:" + PORT );
+        System.out.println("http://localhost:" + PORT);
         server.start();
     }
 

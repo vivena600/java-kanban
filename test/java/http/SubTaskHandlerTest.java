@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubTaskHandlerTest {
-    private final String START_URL = "http://localhost:8080/subTasks";
+    private static final String START_URL = "http://localhost:8080/subTasks";
     private TaskManager taskManager;
     private HttpTaskServer taskServer;
     private HttpClient client;
