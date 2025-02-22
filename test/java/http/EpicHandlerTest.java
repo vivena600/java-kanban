@@ -146,7 +146,8 @@ public class EpicHandlerTest {
     @Test
     void newEpic() throws IOException, InterruptedException {
         int sizeTasksBeforePost = taskManager.getEpics().size();
-        Epic epic3 = new Epic("title3", "discription3");
+        System.out.println(sizeTasksBeforePost);
+        Epic epic3 = new Epic("title3", "discription3",null, null);
         final HttpRequest.BodyPublisher body1 = HttpRequest.BodyPublishers.ofString(gson.toJson(epic3));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(START_URL))
@@ -154,8 +155,10 @@ public class EpicHandlerTest {
                 .build();
         HttpResponse<String> response1 = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+        System.out.println(taskManager.getEpics());
+
         assertEquals(response1.statusCode(), 201, "Не корректный результат при попытке добавить эпик");
-        assertEquals(sizeTasksBeforePost + 1, taskManager.getTasks().size(), "Не корректный " +
+        assertEquals(sizeTasksBeforePost + 1, taskManager.getEpics().size(), "Не корректный " +
                 "результат при попытке добавить эпик");
     }
 }

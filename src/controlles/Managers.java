@@ -19,7 +19,7 @@ public class Managers {
 
     public static Gson getJson() {
         return new GsonBuilder()
-                .serializeNulls()
+                //.serializeNulls()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Duration.class, new DurationAdapters())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapters())

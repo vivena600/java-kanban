@@ -57,18 +57,17 @@ public class EpicHandler extends BaseHttpHandler {
     }
 
     private void handlerPost(HttpExchange exchange) throws IOException {
-        /*
-        String request = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
-        System.out.println(request);
-        if (request.isBlank()) {
+        String body = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+        System.out.println(body);
+        if (body.isBlank()) {
             sendNotFound(exchange);
             return;
         }
-
-        InputStream inputStream = exchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
-        System.out.println(body);
+        //InputStream inputStream = exchange.getRequestBody();
+        //String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET); //не записывается тело
+        System.out.println("Тело" + body.length());
         JsonElement element = JsonParser.parseString(body);
+        System.out.println("элемент " + element.toString()); //элемент
         if (!element.isJsonObject()) {
             sendHasInteractions(exchange);
             return;
@@ -79,30 +78,13 @@ public class EpicHandler extends BaseHttpHandler {
             System.out.println("Я в тру");
             JsonObject object = element.getAsJsonObject();
             System.out.println(object.toString());
-            Task newEpic = gson.fromJson(object, Epic.class);
+            Epic newEpic = gson.fromJson(object, Epic.class);
             System.out.println(newEpic.toString());
             taskManager.add(newEpic);
+            System.out.println("я добавил типо");
             sendText(exchange, "Successfully", 201);
         } catch (JsonSyntaxException ex) {
             sendHasInteractions(exchange);
-        }
-
-         */
-        String requestBody;
-        requestBody = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
-        if (requestBody.isEmpty()) {
-            exchange.sendResponseHeaders(400, 0);
-            sendText(exchange, "Empty request body", 400);
-            return;
-        }
-        try {
-            Epic epic = gson.fromJson(requestBody, Epic.class);
-            taskManager.add(epic);
-            exchange.sendResponseHeaders(201, 0);
-            sendText(exchange, "Creation request sent", 201);
-        } catch (Exception e) {
-            exchange.sendResponseHeaders(400, 0);
-            sendText(exchange, "Invalid request body", 400);
         }
     }
 
