@@ -57,6 +57,7 @@ public class EpicHandler extends BaseHttpHandler {
     }
 
     private void handlerPost(HttpExchange exchange) throws IOException {
+        /*
         String request = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
         System.out.println(request);
         if (request.isBlank()) {
@@ -84,6 +85,24 @@ public class EpicHandler extends BaseHttpHandler {
             sendText(exchange, "Successfully", 201);
         } catch (JsonSyntaxException ex) {
             sendHasInteractions(exchange);
+        }
+
+         */
+        String requestBody;
+        requestBody = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+        if (requestBody.isEmpty()) {
+            exchange.sendResponseHeaders(400, 0);
+            sendText(exchange, "Empty request body", 400);
+            return;
+        }
+        try {
+            Epic epic = gson.fromJson(requestBody, Epic.class);
+            taskManager.add(epic);
+            exchange.sendResponseHeaders(201, 0);
+            sendText(exchange, "Creation request sent", 201);
+        } catch (Exception e) {
+            exchange.sendResponseHeaders(400, 0);
+            sendText(exchange, "Invalid request body", 400);
         }
     }
 
