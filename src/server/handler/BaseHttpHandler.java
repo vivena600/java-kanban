@@ -17,7 +17,7 @@ public class BaseHttpHandler implements HttpHandler {
     protected Gson gson;
 
     public BaseHttpHandler(TaskManager taskManager) {
-        this.gson = Managers.getJson(); //почему так ???
+        this.gson = Managers.getJson();
         this.taskManager = taskManager;
     }
 
@@ -27,6 +27,7 @@ public class BaseHttpHandler implements HttpHandler {
         exchange.sendResponseHeaders(statusCode, resp.length);
         exchange.getResponseBody().write(resp);
         exchange.close();
+        return;
     }
 
     protected String getText(HttpExchange exchange) throws IOException {

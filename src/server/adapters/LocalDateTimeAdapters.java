@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class LocalDateTimeAdapters extends TypeAdapter<LocalDateTime> {
-    protected transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
+    protected transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     @Override
     public void write(JsonWriter jsonWriter, LocalDateTime localDateTime) throws IOException {
@@ -25,8 +25,14 @@ public class LocalDateTimeAdapters extends TypeAdapter<LocalDateTime> {
     @Override
     public LocalDateTime read(JsonReader jsonReader) throws IOException {
         try {
-            return LocalDateTime.parse(jsonReader.nextString(), formatter);
+            String input = jsonReader.nextString();
+            if (input == null) {
+                return null;
+            }
+            LocalDateTime localDateTime = LocalDateTime.parse(input, formatter);
+            return LocalDateTime.from(localDateTime);
         } catch (DateTimeException ex) {
+            System.out.println("Не удалось прочитать localDateTime");
             return null;
         }
     }

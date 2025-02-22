@@ -80,7 +80,6 @@ public class checkTaskHandler {
         taskServer.start();
         HttpClient client = HttpClient.newHttpClient();
         Gson gson = Managers.getJson();
-        //System.out.println(gson.toJson(task3));
         final HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(gson.toJson(task3));
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(task_url)
@@ -89,8 +88,10 @@ public class checkTaskHandler {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+        System.out.println(taskManager.getTasks());
+
         System.out.println("Код - " + response.statusCode());
         System.out.println(response.body());
-        //taskServer.stop();
+        taskServer.stop();
     }
 }

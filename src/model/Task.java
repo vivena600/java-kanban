@@ -22,7 +22,7 @@ public class Task {
         this.description = description;
         this.status = TaskStatus.NEW; //по умолчанию
         this.duration = duration;
-        this.startTime = startTime;
+        this.startTime = formattedTime(startTime);
     }
 
     public Task(String title, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
@@ -30,7 +30,14 @@ public class Task {
         this.description = description;
         this.status = status;
         this.duration = duration;
-        this.startTime = startTime;
+        this.startTime = formattedTime(startTime);
+    }
+
+    public LocalDateTime formattedTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return null;
+        }
+        return LocalDateTime.parse(localDateTime.format(formatter), formatter);
     }
 
     public LocalDateTime getEndTime() {

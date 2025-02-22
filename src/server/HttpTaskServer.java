@@ -10,6 +10,7 @@ import controlles.TaskManager;
 import model.Task;
 import model.TaskStatus;
 import server.handler.EpicHandler;
+import server.handler.PrioritizedHandler;
 import server.handler.SubTaskHandler;
 import server.handler.TaskHandler;
 
@@ -21,9 +22,7 @@ public class HttpTaskServer {
     private final int PORT = 8080;
     private HttpServer server;
 
-    private TaskManager taskManager;
-    private HistoryManager historyManager;
-    private TaskHandler taskHandler;
+    protected TaskManager taskManager;
 
     public HttpTaskServer(TaskManager taskManager) throws IOException {
          this.taskManager = taskManager;
@@ -31,6 +30,7 @@ public class HttpTaskServer {
          server.createContext("/tasks", new TaskHandler(taskManager));
          server.createContext("/subTasks", new SubTaskHandler(taskManager));
          server.createContext("/epics", new EpicHandler(taskManager));
+         server.createContext("/prioritized", new PrioritizedHandler(taskManager));
     }
 
     //служебные методы

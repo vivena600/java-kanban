@@ -62,4 +62,6 @@ public interface TaskManager {
     Epic getEpicsById(int id);
 
     List<Task> getPrioritizedTasks();
+
+    boolean validatorTime(Task newTask);
 }
