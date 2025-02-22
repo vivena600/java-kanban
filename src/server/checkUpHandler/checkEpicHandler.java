@@ -15,8 +15,6 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 public class checkEpicHandler {
     protected static TaskManager taskManager;
 
@@ -52,10 +50,6 @@ public class checkEpicHandler {
         System.out.println("-".repeat(100));
         System.out.println("Удаление Epic по id");
         deleteEpics(taskManager, epic2.getId());
-
-        System.out.println("-".repeat(100));
-        System.out.println("Добавление Эпика");
-        newEpic(taskManager);
     }
 
     private static void getEpics(TaskManager taskManager) throws IOException, InterruptedException {

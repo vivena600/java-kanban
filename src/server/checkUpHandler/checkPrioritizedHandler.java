@@ -17,15 +17,15 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class checkPrioritizedHandler {
-    private static TaskManager taskManager;
+
     public static void main(String[] args) throws IOException, InterruptedException {
-        taskManager = Managers.getDefault();
+        TaskManager taskManager = Managers.getDefault();
         taskManager = new InMemoryTaskManager();
         Task task1 = new Task("Задача 1", "Описание 1",  Duration.ofMinutes(35),
-                LocalDateTime.of(2025, 01, 03, 00, 00));
+                LocalDateTime.of(2025, 1, 3, 0, 0));
         taskManager.add(task1);
         Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofMinutes(35),
-                LocalDateTime.of(2025, 01, 04, 00, 00));
+                LocalDateTime.of(2025, 1, 4, 0, 0));
         taskManager.add(task2);
         Epic epic1 = new Epic("title1", "discription1", null, null);
         taskManager.add(epic1);

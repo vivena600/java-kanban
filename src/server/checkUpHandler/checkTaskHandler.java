@@ -21,10 +21,10 @@ public class checkTaskHandler {
     public static void main(String[] args) throws IOException, InterruptedException {
         taskManager = new InMemoryTaskManager();
         Task task1 = new Task("Задача 1", "Описание 1",  Duration.ofMinutes(35),
-                LocalDateTime.of(2025, 01, 03, 00, 00));
+                LocalDateTime.of(2025, 1, 3, 0, 0));
         taskManager.add(task1);
         Task task2 = new Task("Задача 2", "Описание 2",  Duration.ofMinutes(35),
-                LocalDateTime.of(2025, 01, 04, 00, 00));
+                LocalDateTime.of(2025, 1, 4, 0, 0));
         taskManager.add(task2);
         System.out.println("Get запрос на получение Task по id");
         getTaskForid(taskManager, 1);
@@ -74,7 +74,7 @@ public class checkTaskHandler {
 
     private static void postNewTask(TaskManager taskManager) throws IOException, InterruptedException {
         Task task3 = new Task("Задача 3", "Описание 3",  Duration.ofMinutes(35),
-                LocalDateTime.of(2025, 01, 05, 06, 00));
+                LocalDateTime.of(2025, 1, 5, 6, 0));
         URI task_url = URI.create("http://localhost:8080/tasks");
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
@@ -84,7 +84,6 @@ public class checkTaskHandler {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(task_url)
                 .POST(body)
-               // .header("Content-Type", "json")
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 

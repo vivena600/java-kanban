@@ -21,7 +21,6 @@ public class PrioritizedHandler extends BaseHttpHandler {
             default:
                 sendNotFound(exchange);
         }
-        //exchange.close();
     }
 
     private void handlerGetPrioritiz(HttpExchange exchange) throws IOException {

@@ -7,7 +7,6 @@ import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import controlles.TaskManager;
 import model.SubTask;
-import model.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,7 +64,6 @@ public class SubTaskHandler extends BaseHttpHandler {
             sendHasInteractions(exchange);
             return;
         }
-
         try {
             JsonObject object = element.getAsJsonObject();
             SubTask newSubTask = gson.fromJson(object, SubTask.class);

@@ -5,7 +5,6 @@ import controlles.Managers;
 import controlles.TaskManager;
 import model.Epic;
 import model.SubTask;
-import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +22,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubTaskHandlerTest {
-    private String START_URL = "http://localhost:8080/subTasks";
+    private final String START_URL = "http://localhost:8080/subTasks";
     private TaskManager taskManager;
     private HttpTaskServer taskServer;
     private HttpClient client;

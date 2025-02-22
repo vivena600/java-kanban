@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HistoryHandlerTest {
-    private String START_URL = "http://localhost:8080/history";
+    private final String START_URL = "http://localhost:8080/history";
     private TaskManager taskManager;
     private HttpTaskServer taskServer;
     private HttpClient client;
@@ -108,6 +108,4 @@ public class HistoryHandlerTest {
         assertEquals(gson.toJson(taskManager.getHistory()), response2.body(), "Не совпадает вывод истории");
         assertEquals(taskManager.getHistory().size(), 2);
     }
-
-
 }

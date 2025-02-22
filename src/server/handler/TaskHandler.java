@@ -13,9 +13,8 @@ import java.io.InputStream;
 
 public class TaskHandler extends BaseHttpHandler {
 
-    public TaskHandler(TaskManager taskManager) throws IOException {
+    public TaskHandler(TaskManager taskManager) {
         super(taskManager);
-        System.out.println(taskManager.getTasks().toString());
     }
 
     private void handlerGetTask(HttpExchange exchange) throws IOException {

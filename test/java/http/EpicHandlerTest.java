@@ -5,8 +5,6 @@ import controlles.Managers;
 import controlles.TaskManager;
 import model.Epic;
 import model.SubTask;
-import model.Task;
-import model.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +21,7 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EpicHandlerTest {
-    private String START_URL = "http://localhost:8080/epics";
+    private final String START_URL = "http://localhost:8080/epics";
     private TaskManager taskManager;
     private HttpTaskServer taskServer;
     private HttpClient client;
@@ -86,7 +84,6 @@ public class EpicHandlerTest {
                 .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
         assertEquals(response.statusCode(), 200, "Не совпадает код статуса");
         assertEquals(gson.toJson(taskManager.getEpicsById(1)), response.body(), "Не совпадает ожидаемый ответ");
     }
@@ -140,7 +137,6 @@ public class EpicHandlerTest {
 
         assertEquals(response.statusCode(), 200, "Не корректный результат при попытке удалить задачу");
         assertEquals(gson.toJson("Successfully"), response.body(), "Не совпадает ожидаемый ответ");
-        // TODO - сделать проверку на корректное удаление подзадач, которые находились внутриудаляемого эпика
     }
 
     @Test

@@ -8,10 +8,8 @@ import com.sun.net.httpserver.HttpExchange;
 import controlles.TaskManager;
 import model.Epic;
 import model.SubTask;
-import model.Task;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class EpicHandler extends BaseHttpHandler {
@@ -63,25 +61,15 @@ public class EpicHandler extends BaseHttpHandler {
             sendNotFound(exchange);
             return;
         }
-        //InputStream inputStream = exchange.getRequestBody();
-        //String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET); //не записывается тело
-        System.out.println("Тело" + body.length());
         JsonElement element = JsonParser.parseString(body);
-        System.out.println("элемент " + element.toString()); //элемент
         if (!element.isJsonObject()) {
             sendHasInteractions(exchange);
             return;
-
         }
-
         try {
-            System.out.println("Я в тру");
             JsonObject object = element.getAsJsonObject();
-            System.out.println(object.toString());
             Epic newEpic = gson.fromJson(object, Epic.class);
-            System.out.println(newEpic.toString());
             taskManager.add(newEpic);
-            System.out.println("я добавил типо");
             sendText(exchange, "Successfully", 201);
         } catch (JsonSyntaxException ex) {
             sendHasInteractions(exchange);
