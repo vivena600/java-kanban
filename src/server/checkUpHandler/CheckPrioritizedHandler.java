@@ -39,12 +39,12 @@ public class CheckPrioritizedHandler {
         Epic epic2 = new Epic("title2", "discription2", null, null);
         taskManager.add(epic2);
 
-        URI task_url = URI.create("http://localhost:8080/prioritized");
+        URI taskUrl = URI.create("http://localhost:8080/prioritized");
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(task_url)
+                .uri(taskUrl)
                 .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

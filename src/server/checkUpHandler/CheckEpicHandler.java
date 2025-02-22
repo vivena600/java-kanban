@@ -53,12 +53,12 @@ public class CheckEpicHandler {
     }
 
     private static void getEpics(TaskManager taskManager) throws IOException, InterruptedException {
-        URI epic_url = URI.create("http://localhost:8080/epics");
+        URI epicUrl = URI.create("http://localhost:8080/epics");
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(epic_url)
+                .uri(epicUrl)
                 .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -70,12 +70,12 @@ public class CheckEpicHandler {
     }
 
     private static void getEpicTaskForid(TaskManager taskManager, int id) throws IOException, InterruptedException {
-        URI epic_url = URI.create("http://localhost:8080/epics/" + id);
+        URI epicUrl = URI.create("http://localhost:8080/epics/" + id);
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(epic_url)
+                .uri(epicUrl)
                 .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -87,12 +87,12 @@ public class CheckEpicHandler {
 
     private static void deleteEpics(TaskManager taskManager, int id) throws IOException, InterruptedException {
         Gson gson = Managers.getJson();
-        URI epic_url = URI.create("http://localhost:8080/epics/" + id);
+        URI epicUrl = URI.create("http://localhost:8080/epics/" + id);
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(epic_url)
+                .uri(epicUrl)
                 .GET()
                 .DELETE()
                 .build();

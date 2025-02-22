@@ -38,12 +38,12 @@ public class CheckSubTaskHandler {
     }
 
     protected static void getSubTasksHandler(TaskManager taskManager) throws IOException, InterruptedException {
-        URI subTask_url = URI.create("http://localhost:8080/subTasks");
+        URI subTaskUrl = URI.create("http://localhost:8080/subTasks");
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(subTask_url)
+                .uri(subTaskUrl)
                 .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -55,12 +55,12 @@ public class CheckSubTaskHandler {
     }
 
     private static void getSubTaskForid(TaskManager taskManager, int id) throws IOException, InterruptedException {
-        URI subTask_url = URI.create("http://localhost:8080/subTasks/" + id);
+        URI subTaskUrl = URI.create("http://localhost:8080/subTasks/" + id);
         HttpTaskServer taskServer = new HttpTaskServer(taskManager);
         taskServer.start();
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(subTask_url)
+                .uri(subTaskUrl)
                 .GET()
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
