@@ -1,15 +1,12 @@
 package server.handler;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 import controlles.TaskManager;
 import model.Epic;
-import model.Task;
+import model.SubTask;
 
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 
 public class EpicHandler extends BaseHttpHandler {
 
@@ -22,7 +19,7 @@ public class EpicHandler extends BaseHttpHandler {
         if (url.length == 2) {
             response = gson.toJson(taskManager.getEpics());
             sendText(exchange, response, 200);
-        } else {
+        } else if (url.length == 3) {
             try {
                 int id = Integer.parseInt(url[2]);
                 Epic epic = taskManager.getEpicsById(id);
@@ -30,6 +27,20 @@ public class EpicHandler extends BaseHttpHandler {
                     sendNotFound(exchange);
                 } else {
                     response = gson.toJson(epic);
+                    sendText(exchange, response, 200);
+                }
+            } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
+                sendNotFound(exchange);
+            }
+        } else {
+            try {
+                int id = Integer.parseInt(url[2]);
+                Epic epic = taskManager.getEpicsById(id);
+                if (epic == null) {
+                    sendNotFound(exchange);
+                } else {
+                    ArrayList<SubTask> subtask = taskManager.getEpicsSupTask(epic);
+                    response = gson.toJson(subtask);
                     sendText(exchange, response, 200);
                 }
             } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {

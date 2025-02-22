@@ -78,7 +78,7 @@ public class EpicHandlerTest {
     }
 
     @Test
-    void getTasByIdTest() throws IOException, InterruptedException {
+    void getEpicByIdTest() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(START_URL + "/" + epic1.getId()))
                 .GET()
@@ -90,7 +90,7 @@ public class EpicHandlerTest {
     }
 
     @Test
-    void getTasByNonExsistentId() throws IOException, InterruptedException {
+    void getEpicByNonExsistentId() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(START_URL + "/10"))
                 .GET()
@@ -100,6 +100,19 @@ public class EpicHandlerTest {
         assertEquals(response.statusCode(), 404, "Не корректный результат при попытке получить " +
                 "несуществующую задачу");
         assertEquals("Not Found", response.body(), "Не совпадает ожидаемый ответ");
+    }
+
+    @Test
+    void getSubTaskByEpic() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(START_URL + "/" + epic1.getId() + "/subtasks"))
+                .GET()
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        assertEquals(response.statusCode(), 200, "Не корректный результат при попытке получить " +
+                "список подзадач из эпиков");
+        assertEquals(response.body(), gson.toJson(taskManager.getEpicsSupTask(epic1)), "Не совпадает ожидаемый ответ");
     }
 
     @Test
