@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class checkPrioritizedHandler {
+public class CheckPrioritizedHandler {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         TaskManager taskManager = Managers.getDefault();

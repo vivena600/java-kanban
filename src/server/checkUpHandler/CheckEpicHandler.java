@@ -15,7 +15,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class checkEpicHandler {
+public class CheckEpicHandler {
     protected static TaskManager taskManager;
 
     public static void main(String[] args) throws IOException, InterruptedException {

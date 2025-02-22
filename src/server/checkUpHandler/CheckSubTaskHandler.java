@@ -1,13 +1,10 @@
 package server.checkUpHandler;
 
-import controlles.InMemoryTaskManager;
 import controlles.Managers;
 import controlles.TaskManager;
 import model.Epic;
 import model.SubTask;
-import model.Task;
 import server.HttpTaskServer;
-import server.handler.TaskHandler;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,7 +14,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class checkSubTaskHandler {
+public class CheckSubTaskHandler {
     protected static TaskManager taskManager;
 
     public static void main(String[] args) throws IOException, InterruptedException {
