@@ -1,7 +1,6 @@
 package server.handler;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
@@ -9,7 +8,6 @@ import controlles.TaskManager;
 import model.Task;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class TaskHandler extends BaseHttpHandler {
 
