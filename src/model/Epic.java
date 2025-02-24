@@ -10,6 +10,10 @@ public class Epic extends Task {
     protected ArrayList<Integer> subTaskId = new ArrayList<>();
     protected LocalDateTime endTime;
 
+    public Epic(String title, String description, Duration duration, LocalDateTime startTime) {
+        super(title, description, duration, startTime);
+    }
+
     public Epic(String title, String description, int id, Duration duration, LocalDateTime startTime) {
         super(title, description, duration, startTime);
         this.id = id;
@@ -24,10 +28,6 @@ public class Epic extends Task {
 
     public ArrayList<Integer> getSubTaskId() {
         return subTaskId;
-    }
-
-    public Epic(String title, String descryption, Duration duration, LocalDateTime startTime) {
-        super(title, descryption, duration, startTime);
     }
 
     public void setStartTime(LocalDateTime startTime) {

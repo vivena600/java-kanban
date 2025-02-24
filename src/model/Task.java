@@ -15,14 +15,20 @@ public class Task {
     protected TaskStatus status;
     protected int id;
 
-    protected DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyy HH:mm");
+    protected transient DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+
+    public Task(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.status = TaskStatus.NEW; //по умолчанию
+    }
 
     public Task(String title, String description, Duration duration, LocalDateTime startTime) {
         this.title = title;
         this.description = description;
-        this.status = TaskStatus.NEW; //по умолчанию
+        this.status = TaskStatus.NEW;
         this.duration = duration;
-        this.startTime = startTime;
+        this.startTime = formattedTime(startTime);
     }
 
     public Task(String title, String description, TaskStatus status, Duration duration, LocalDateTime startTime) {
@@ -30,7 +36,14 @@ public class Task {
         this.description = description;
         this.status = status;
         this.duration = duration;
-        this.startTime = startTime;
+        this.startTime = formattedTime(startTime);
+    }
+
+    public LocalDateTime formattedTime(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return null;
+        }
+        return LocalDateTime.parse(localDateTime.format(formatter), formatter);
     }
 
     public LocalDateTime getEndTime() {
