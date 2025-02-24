@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import controlles.TaskManager;
 import model.SubTask;
+import model.Task;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,16 +58,14 @@ public class SubTaskHandler extends BaseHttpHandler {
 
     private void handlerPost(HttpExchange exchange) throws IOException {
         String[] url = exchange.getRequestURI().getPath().split("/");
-        InputStream inputStream = exchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
+        String body = getText(exchange);
         JsonElement element = JsonParser.parseString(body);
         if (!element.isJsonObject()) {
             sendHasInteractions(exchange);
             return;
         }
         try {
-            JsonObject object = element.getAsJsonObject();
-            SubTask newSubTask = gson.fromJson(object, SubTask.class);
+            final SubTask newSubTask = gson.fromJson(body, SubTask.class);
             if (url.length == 2) {
                 if (!taskManager.validatorTime(newSubTask)) {
                     response = gson.toJson("Not Acceptable");

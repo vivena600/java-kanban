@@ -55,8 +55,7 @@ public class EpicHandler extends BaseHttpHandler {
     }
 
     private void handlerPost(HttpExchange exchange) throws IOException {
-        String body = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
-        System.out.println(body);
+        String body = getText(exchange);
         if (body.isBlank()) {
             sendNotFound(exchange);
             return;
@@ -67,8 +66,7 @@ public class EpicHandler extends BaseHttpHandler {
             return;
         }
         try {
-            JsonObject object = element.getAsJsonObject();
-            Epic newEpic = gson.fromJson(object, Epic.class);
+            Epic newEpic = gson.fromJson(body, Epic.class);
             taskManager.add(newEpic);
             sendText(exchange, "Successfully", 201);
         } catch (JsonSyntaxException ex) {
@@ -83,16 +81,13 @@ public class EpicHandler extends BaseHttpHandler {
             if (taskManager.getEpicsById(id) == null) {
                 sendNotFound(exchange);
             } else {
-                System.out.println(taskManager.getEpicsById(id).toString());
                 taskManager.deleteEpic(id);
                 response = gson.toJson("Successfully");
-                System.out.println(response);
                 sendText(exchange, response, 200);
             }
         } catch (NumberFormatException | StringIndexOutOfBoundsException ex) {
             sendNotFound(exchange);
         } catch (NullPointerException ex) {
-            System.out.println("упс пустое значение");
             sendNotFound(exchange);
         }
     }

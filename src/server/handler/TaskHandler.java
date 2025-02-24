@@ -41,8 +41,7 @@ public class TaskHandler extends BaseHttpHandler {
 
     private void handlerPost(HttpExchange exchange) throws IOException {
         String[] url = exchange.getRequestURI().getPath().split("/");
-        InputStream inputStream = exchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), DEFAULT_CHARSET);
+        String body = getText(exchange);
         JsonElement element = JsonParser.parseString(body);
         if (!element.isJsonObject()) {
             sendHasInteractions(exchange);
@@ -50,8 +49,7 @@ public class TaskHandler extends BaseHttpHandler {
         }
 
         try {
-            JsonObject object = element.getAsJsonObject();
-            Task newTask = gson.fromJson(object, Task.class);
+            final Task newTask = gson.fromJson(body, Task.class);
             if (url.length == 2) {
                 if (!taskManager.validatorTime(newTask)) {
                     response = gson.toJson("Not Acceptable");
@@ -70,7 +68,7 @@ public class TaskHandler extends BaseHttpHandler {
                 }
                 taskManager.update(newTask);
                 sendText(exchange, "Successfully", 201);
-            }
+                }
         } catch (JsonSyntaxException ex) {
             sendHasInteractions(exchange);
         }

@@ -151,8 +151,6 @@ public class EpicHandlerTest {
                 .build();
         HttpResponse<String> response1 = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        System.out.println(taskManager.getEpics());
-
         assertEquals(response1.statusCode(), 201, "Не корректный результат при попытке добавить эпик");
         assertEquals(sizeTasksBeforePost + 1, taskManager.getEpics().size(), "Не корректный " +
                 "результат при попытке добавить эпик");
